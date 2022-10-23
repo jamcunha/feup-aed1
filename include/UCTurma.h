@@ -3,8 +3,8 @@
 
 class UCTurma {
 private:
-    int _cod_uc;
-    int _cod_turma;
+    int cod_uc_;
+    int cod_turma_;
 
 public:
     UCTurma(int cod_uc, int cod_turma);
