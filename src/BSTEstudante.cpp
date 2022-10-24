@@ -6,6 +6,10 @@ BSTEstudante::BSTEstudante(const Estudante &est) {
     right = nullptr;
 }
 
+BSTEstudante::~BSTEstudante() {
+    makeEmpty();
+}
+
 void BSTEstudante::insert(const Estudante &est) {
     if(est == est_) {
         // Pode-se retirar o for pelo primeiro valor da lista getTurmas()
@@ -32,4 +36,17 @@ BSTEstudante *BSTEstudante::insert(BSTEstudante *root, const Estudante &est) {
     }
 
     return root;
+}
+
+void BSTEstudante::makeEmpty() {
+    makeEmpty(left);
+    makeEmpty(right);
+}
+
+void BSTEstudante::makeEmpty(BSTEstudante *root) {
+    if(root) {
+        makeEmpty(root->left);
+        makeEmpty(root->right);
+        delete root;
+    }
 }
