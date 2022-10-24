@@ -3,6 +3,7 @@
 
 #include <string>
 #include <list>
+
 #include "UCTurma.h"
 
 class Estudante {
@@ -12,7 +13,20 @@ private:
     std::list<UCTurma> turmas_;
 
 public:
+    Estudante();
     Estudante(int cod_estudante, const std::string &nome);
+    Estudante(const Estudante &est);
+
+    int getCodEstudante() const;
+    std::string getNome() const;
+    std::list<UCTurma> getTurmas() const;
+
+    void addTurma(const UCTurma &turma);
+
+    bool operator==(const Estudante &est) const;
+    bool operator<(const Estudante &est) const;
+    bool operator>(const Estudante &est) const;
+    Estudante &operator=(const Estudante &est);
 };
 
 #endif //FEUP_AED1_ESTUDANTE_H
