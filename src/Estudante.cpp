@@ -21,3 +21,7 @@ void Estudante::addTurma(const UCTurma &turma) {
 bool Estudante::operator==(const Estudante &est) const {
     return (nome_ == est.getNome() && cod_estudante_ == est.getCodEstudante());
 }
+
+bool Estudante::operator<(const Estudante &est) const {
+    return nome_ < est.getNome();
+}
