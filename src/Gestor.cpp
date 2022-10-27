@@ -33,4 +33,74 @@ void Gestor::lerFicheiros() {
     }
 }
 
-void Gestor::mostrarMenu() {}
+void Gestor::mostrarMenu() {
+    std::cout << "--------------------------------------------------------\n";
+    std::cout << "|                         MENU                         |\n";
+    std::cout << "|------------------------------------------------------|\n";
+    std::cout << "| 1 - Ver Estudantes                                   |\n";
+    std::cout << "| 2 - Ver Turmas                                       |\n";
+    std::cout << "| 3 - Ver Horario                                      |\n";
+    std::cout << "| 4 - Ver UC                                           |\n";
+    std::cout << "|                                                      |\n";
+    std::cout << "| 0 - Sair                                             |\n";
+    std::cout << "--------------------------------------------------------\n";
+    int opcao_menu_;
+    while(true) {
+        std::cout << "\nOpcao (Default 1): ";
+        std::cin >> opcao_menu_;
+        if(opcao_menu_ <= 4 && opcao_menu_ >= 0)
+            break;
+        std::cout << "Opcao nao valida, escolha outra opcao.\n";
+    }
+    switch(opcao_menu_) {
+        case 1:
+            break;
+        case 2:
+            break;
+        case 3:
+            break;
+        default:
+            exit(0);
+    }
+}
+
+void Gestor::listarEstudantes() const {
+    bool flag= true;
+    while(true){
+        std::system("clear");
+        std::cout << "--------------------------------------------------------\n";
+        std::cout << "|                         MENU                         |\n";
+        std::cout << "|------------------------------------------------------|\n";
+        std::cout << "| 1 - Ordenar por nome                                 |\n";
+        std::cout << "| 2 - Ordenar por codico estudante                     |\n";
+        std::cout << "| 3 - Ordenar por                                      |\n";
+        std::cout << "| 4 -                                                  |\n";
+        std::cout << "|                                                      |\n";
+        std::cout << "| 9 - Crescente/Decrescente " << "(" << (flag ? "Crescente)  " : "Decrescente)") << "              |\n";
+        std::cout << "| 0 - Sair                                             |\n";
+        std::cout << "--------------------------------------------------------\n";
+        int opcao_menu_ = 1;
+        while(true) {
+            std::cout << "\nOpcao (Default 1): ";
+            std::cin >> opcao_menu_;
+            if((opcao_menu_ <= 4 && opcao_menu_ >= 0) || opcao_menu_==9)
+                break;
+            std::cout << "Opcao nao valida, escolha outra opcao.\n";
+        }
+        switch(opcao_menu_) {
+            case 1:
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+            case 9:
+                flag = !flag;
+                break;
+            default:
+                exit(0);
+        }
+    }
+}
+
+

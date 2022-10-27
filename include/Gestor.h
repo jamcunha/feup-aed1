@@ -6,7 +6,7 @@
 #include <string>
 #include <sstream>
 #include <fstream>
-
+#include <iostream>
 #include "Estudante.h"
 #include "TurmaH.h"
 
@@ -18,10 +18,12 @@ private:
 
 public:
     Gestor();
-
     void lerFicheiros();
-
     void mostrarMenu();
+    void listarEstudantes() const;
+    void settings() const;
+
+
 };
 
 #endif //FEUP_AED1_GESTOR_H
