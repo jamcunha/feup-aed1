@@ -20,6 +20,7 @@ public:
     void addTurma(const UCTurma &turma);
 
     bool operator==(const Estudante &est) const;
+    bool operator<(const Estudante &est) const;
 };
 
 #endif //FEUP_AED1_ESTUDANTE_H

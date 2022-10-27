@@ -1,16 +1,18 @@
 #ifndef FEUP_AED1_UCTURMA_H
 #define FEUP_AED1_UCTURMA_H
 
+#include <string>
+
 class UCTurma {
 private:
-    int cod_uc_;
-    int cod_turma_;
+    std::string cod_uc_;
+    std::string cod_turma_;
 
 public:
-    UCTurma(int cod_uc, int cod_turma);
+    UCTurma(const std::string &cod_uc, const std::string &cod_turma);
 
-    int getCodUC() const;
-    int getCodTurma() const;
+    std::string getCodUC() const;
+    std::string getCodTurma() const;
 };
 
 #endif //FEUP_AED1_UCTURMA_H
