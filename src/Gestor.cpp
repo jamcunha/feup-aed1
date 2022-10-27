@@ -21,11 +21,8 @@ void Gestor::lerFicheiros() {
         Estudante est = Estudante(cod_estudante, nome);
         auto it = estudantes_.find(est);
         if(it != estudantes_.end()) {
-            // não deve ser a melhor coisa mas nao da erros
-            Estudante temp = *it;
-            estudantes_.erase(it);
+            auto &temp = const_cast<Estudante &>(*it);
             temp.addTurma(UCTurma(cod_uc, cod_turma));
-            estudantes_.insert(temp);
         } else {
             est.addTurma(UCTurma(cod_uc, cod_turma));
             estudantes_.insert(est);
