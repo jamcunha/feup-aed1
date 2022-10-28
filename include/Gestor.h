@@ -22,6 +22,7 @@ public:
     void mostrarMenu();
     void listarEstudantes() const;
     void settings() const;
+    void listarTurmas() const;
 
 
 };

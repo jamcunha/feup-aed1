@@ -54,8 +54,10 @@ void Gestor::mostrarMenu() {
     }
     switch(opcao_menu_) {
         case 1:
+            listarEstudantes();
             break;
         case 2:
+            listarTurmas();
             break;
         case 3:
             break;
@@ -73,7 +75,7 @@ void Gestor::listarEstudantes() const {
         std::cout << "|------------------------------------------------------|\n";
         std::cout << "| 1 - Ordenar por nome                                 |\n";
         std::cout << "| 2 - Ordenar por codico estudante                     |\n";
-        std::cout << "| 3 - Ordenar por                                      |\n";
+        std::cout << "| 3 - Ordenar                                      |\n";
         std::cout << "| 4 -                                                  |\n";
         std::cout << "|                                                      |\n";
         std::cout << "| 9 - Crescente/Decrescente " << "(" << (flag ? "Crescente)  " : "Decrescente)") << "              |\n";
@@ -89,10 +91,14 @@ void Gestor::listarEstudantes() const {
         }
         switch(opcao_menu_) {
             case 1:
+                set(ordenarNome);
                 break;
+
             case 2:
+                set(ordenarCODUC);
                 break;
             case 3:
+
                 break;
             case 9:
                 flag = !flag;
@@ -100,7 +106,67 @@ void Gestor::listarEstudantes() const {
             default:
                 exit(0);
         }
+        std::cout<< "Numero Estudante | Nome";
+        for (auto i = estudantes_.begin(); i!=estudantes_.end() ; i++){
+            std::cout<<i->getCodEstudante()<<"\t"<< i->getNome()<<"\n";
+        }
+        break;
     }
 }
+void Gestor::listarTurmas() const {
+    bool flag= true;
+    while(true){
+        std::system("clear");
+        std::cout << "--------------------------------------------------------\n";
+        std::cout << "|                         MENU                         |\n";
+        std::cout << "|------------------------------------------------------|\n";
+        std::cout << "| 1 - Ver Estudantes por Ano                           |\n";
+        std::cout << "| 2 - Ordenar por codico estudante                     |\n";
+        std::cout << "| 3 - Ordenar                                      |\n";
+        std::cout << "| 4 -                                                  |\n";
+        std::cout << "|                                                      |\n";
+        std::cout << "| 9 - Crescente/Decrescente " << "(" << (flag ? "Crescente)  " : "Decrescente)") << "              |\n";
+        std::cout << "| 0 - Sair                                             |\n";
+        std::cout << "--------------------------------------------------------\n";
+        int opcao_menu_ = 1;
+        while(true) {
+            std::cout << "\nOpcao (Default 1): ";
+            std::cin >> opcao_menu_;
+            if((opcao_menu_ <= 4 && opcao_menu_ >= 0) || opcao_menu_==9)
+                break;
+            std::cout << "Opcao nao valida, escolha outra opcao.\n";
+        }
+        switch(opcao_menu_) {
+            case 1:
+                std::list<std::set<Estudante>> turmasN;
+                for (auto i = estudantes_.begin(); i!= estudantes_.end(); i++) {
+                    for (auto j = i->getTurmas().begin(); j!=i->getTurmas().end(); j++){
+                        int code = std::stoi(j->getCodTurma().substr(j->getCodTurma().size()-3,2));
+                        auto l = turmasN.begin();
+                        std::advance(l, code-1);
+                        l->insert(*i);
+                    }
+                }
+                break;
+            case 2:
+                set(ordenarCODUC);
+                break;
+            case 3:
+
+                break;
+            case 9:
+                flag = !flag;
+                break;
+            default:
+                exit(0);
+        }
+        std::cout<< "Numero Estudante | Nome";
+        for (auto i = estudantes_.begin(); i!=estudantes_.end() ; i++){
+            std::cout<<i->getCodEstudante()<<"\t"<< i->getNome()<<"\n";
+        }
+        break;
+    }
+}
+
 
 
