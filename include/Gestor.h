@@ -10,10 +10,11 @@
 
 #include "Estudante.h"
 #include "TurmaH.h"
+#include "OrdenarEstudantes.h"
 
 class Gestor {
 private:
-    std::set<Estudante> estudantes_;
+    std::set<Estudante, NomeCrescente> estudantes_;
     std::vector<TurmaH> horarios_;
     //TODO Pedidos
 
