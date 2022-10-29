@@ -9,6 +9,7 @@
 #include <iostream>
 #include "Estudante.h"
 #include "TurmaH.h"
+#include <algorithm>
 
 class Gestor {
 private:
