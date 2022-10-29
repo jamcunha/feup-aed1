@@ -5,11 +5,24 @@ Gestor::Gestor() {}
 void Gestor::lerFicheiros() {
     std::ifstream inp_estudante("../data/students_classes.csv");
     std::ifstream inp_aulas("../data/classes.csv");
+    std::ifstream inp_turmas("../data/classes_per_uc.csv");
 
     // Descartar a primeira linha dos ficheiros
     std::string line;
     getline(inp_estudante, line);
     getline(inp_aulas, line);
+    getline(inp_turmas, line);
+
+    for(line; getline(inp_turmas, line);) {
+        std::stringstream ss(line);
+        std::string cod_uc, cod_turma;
+
+        getline(ss, cod_uc, ',');
+        getline(ss, cod_turma, ',');
+
+        UCTurma turma = UCTurma(cod_uc, cod_turma);
+        capacidade_.insert(std::pair<UCTurma, unsigned> (turma, 0));
+    }
 
     for(line; getline(inp_estudante, line);) {
         std::stringstream ss(line);
@@ -26,9 +39,13 @@ void Gestor::lerFicheiros() {
         auto it = estudantes_.find(est);
         if(it != estudantes_.end()) {
             auto &temp = const_cast<Estudante &>(*it);
+
+            capacidade_.at(UCTurma(cod_uc, cod_turma))++;
             temp.addTurma(UCTurma(cod_uc, cod_turma));
         } else {
+            capacidade_.at(UCTurma(cod_uc, cod_turma))++;
             est.addTurma(UCTurma(cod_uc, cod_turma));
+
             estudantes_.insert(est);
         }
     }
@@ -57,6 +74,31 @@ void Gestor::lerFicheiros() {
             TurmaH horario = TurmaH(turma);
             horario.addAula(aula);
             horarios_.push_back(horario);
+        }
+    }
+}
+
+void Gestor::adicionarPedido(const Estudante &est, const UCTurma &turma, unsigned int tipo) {
+    pedidos_.push(Pedido(est, turma, tipo));
+}
+
+void Gestor::processarPedidos() {
+    while(!pedidos_.empty()) {
+        Pedido pedido = pedidos_.front();
+        pedidos_.pop();
+
+        bool flag;
+        switch(pedido.getTipo()) {
+            case 1:
+                flag = removerEstudante(pedido.getEstudante());
+                if(!flag)
+                    arquivo_.push_back(pedido);
+                break;
+            case 2:
+                flag = adicionarEstudante(pedido.getEstudante(), pedido.getTurma());
+                if(!flag)
+                    arquivo_.push_back(pedido);
+                break;
         }
     }
 }
