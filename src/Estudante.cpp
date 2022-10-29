@@ -25,7 +25,3 @@ bool Estudante::operator==(const Estudante &est) const {
 bool Estudante::operator!=(const Estudante &est) const {
     return !(*this == est);
 }
-
-bool Estudante::operator<(const Estudante &est) const {
-    return nome_ < est.getNome();
-}
