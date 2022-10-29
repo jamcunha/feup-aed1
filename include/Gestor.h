@@ -11,7 +11,11 @@
 #include "Estudante.h"
 #include "TurmaH.h"
 #include "OrdenarEstudantes.h"
-
+/**
+ * @brief Cria um Gestor
+ *
+ * @details O gestor será utilizado para 
+ */
 class Gestor {
 private:
     std::set<Estudante, NomeCrescente> estudantes_;
