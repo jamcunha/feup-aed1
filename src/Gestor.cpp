@@ -78,7 +78,7 @@ void Gestor::lerFicheiros() {
     }
 }
 
-void Gestor::adicionarPedido(const Estudante &est, const UCTurma &turma, unsigned int tipo) {
+void Gestor::adicionarPedido(unsigned tipo, const Estudante &est, const UCTurma &turma) {
     pedidos_.push(Pedido(est, turma, tipo));
 }
 
@@ -90,9 +90,7 @@ void Gestor::processarPedidos() {
         bool flag;
         switch(pedido.getTipo()) {
             case 1:
-                flag = removerEstudante(pedido.getEstudante());
-                if(!flag)
-                    arquivo_.push_back(pedido);
+                removerEstudante(pedido.getEstudante());
                 break;
             case 2:
                 flag = adicionarEstudante(pedido.getEstudante(), pedido.getTurma());
@@ -101,6 +99,11 @@ void Gestor::processarPedidos() {
                 break;
         }
     }
+}
+
+void Gestor::removerEstudante(const Estudante &estudante) {
+    auto it = estudantes_.find(estudante);
+    estudantes_.erase(it);
 }
 
 void Gestor::mostrarMenu() {}

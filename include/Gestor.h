@@ -23,14 +23,16 @@ private:
     std::map<UCTurma, unsigned> capacidade_;
     std::list<Pedido> arquivo_;
 
+    void removerEstudante(const Estudante &estudante);
+    bool adicionarEstudante(const Estudante &est, const UCTurma &turma);
+
 public:
     Gestor();
 
     void lerFicheiros();
-    void adicionarPedido(const Estudante &est, const UCTurma &turma, unsigned tipo);
+    // Adicionado um valor default à turma pois não é necessária para remover estudantes
+    void adicionarPedido(unsigned tipo, const Estudante &est, const UCTurma &turma = UCTurma("", ""));
     void processarPedidos();
-    bool removerEstudante(const Estudante &estudante);
-    bool adicionarEstudante(const Estudante &est, const UCTurma &turma);
     void mostrarMenu();
 };
 
