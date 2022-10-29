@@ -6,20 +6,17 @@
  * @brief Representa uma aula.
  */
 class Aula{
-    /**
-     * @note Todas as aulas são retiradas do ficheiro schedule.zip.
-     */
 private:
     /**
      * @brief Dia da semana em que a aula é lecionada.
      */
     std::string dia_;
     /**
-     * @brief Inicio da aula, guardado em float (10,30 -> 10h:30m).
+     * @brief Inicio da aula, guardado em float (10,50 -> 10h:30m).
      */
     float inicio_;
     /**
-     * @brief Fim da aula, guardado em float (11,30 -> 11h:30m).
+     * @brief Fim da aula, guardado em float (11,50 -> 11h:30m).
      */
     float fim_;
     /**
