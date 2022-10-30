@@ -43,13 +43,8 @@ public:
      * @param aula Nova aula a adicionar.
      */
     void addAula(const Aula &aula);
-    //Operadores
-    /**
-     * Compara se a turma1 é igual á turma2.
-     * @param turma turma a ser comparada.
-     * @return True se forem da mesma turma.
-     * @return False se não forem da mesma turma.
-     */
+    bool isCompatible(const TurmaH &horario) const;
+
     bool operator==(const TurmaH &turma) const;
     /**
      * Compara se a turma1 é diferente da turma2.

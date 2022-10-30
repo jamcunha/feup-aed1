@@ -46,6 +46,9 @@ public:
      * @return False se ambas turmas e UC forem iguais.
      */
     bool operator!=(const UCTurma &turma) const;
+
+    // Para poder usar o std::pair
+    bool operator<(const UCTurma &turma) const;
 };
 
 #endif //FEUP_AED1_UCTURMA_H
