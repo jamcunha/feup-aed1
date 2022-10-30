@@ -19,6 +19,8 @@ public:
 
     void addAula(const Aula &aula);
 
+    bool isCompatible(const TurmaH &horario) const;
+
     bool operator==(const TurmaH &turma) const;
     bool operator!=(const TurmaH &turma) const;
 };
