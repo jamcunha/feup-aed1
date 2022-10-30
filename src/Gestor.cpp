@@ -91,11 +91,11 @@ void Gestor::listarEstudantes() const {
         }
         switch(opcao_menu_) {
             case 1:
-                set(ordenarNome);
+                //set(ordenarNome);
                 break;
 
             case 2:
-                set(ordenarCODUC);
+                //set(ordenarCODUC);
                 break;
             case 3:
 
@@ -110,7 +110,6 @@ void Gestor::listarEstudantes() const {
         for (auto i = estudantes_.begin(); i!=estudantes_.end() ; i++){
             std::cout<<i->getCodEstudante()<<"\t"<< i->getNome()<<"\n";
         }
-        break;
     }
 }
 void Gestor::listarTurmas() const {
@@ -121,11 +120,11 @@ void Gestor::listarTurmas() const {
         std::cout << "|                         MENU                         |\n";
         std::cout << "|------------------------------------------------------|\n";
         std::cout << "| 1 - Ver Estudantes por Ano                           |\n";
-        std::cout << "| 2 - Ver Estudantes por Turma                         |\n";
-        std::cout << "| 3 - Ver Estudantes por Disciplina                    |\n";
+        std::cout << "| 2 - Ver Estudantes por Disciplina                    |\n";
+        std::cout << "| 3 -                                                  |\n";
         std::cout << "| 4 -                                                  |\n";
         std::cout << "|                                                      |\n";
-        std::cout << "| 9 - Crescente/Decrescente " << "(" << (flag ? "Crescente)  " : "Decrescente)") << "              |\n";
+        std::cout << "| 9 - Crescente/Decrescente " << "(" << (flag ? "Crescente  " : "Decrescente") << "              |\n";
         std::cout << "| 0 - Sair                                             |\n";
         std::cout << "--------------------------------------------------------\n";
         int opcao_menu_ = 1;
@@ -162,25 +161,29 @@ void Gestor::listarTurmas() const {
                 std::string opcao_disciplina;
                 std::set<std::string> listar_disciplinas {"L.EIC001","L.EIC002", "L.EIC003", "L.EIC004", "L.EIC005", "L.EIC011", "L.EIC012", "L.EIC013", "L.EIC014", "L.EIC015", "L.EIC021", "L.EIC022", "L.EIC023", "L.EIC024", "L.EIC025", "UP001"};
                 std::set<std::string> listar_turmas {"1LEIC01", "1LEIC02", "1LEIC03", "1LEIC04", "1LEIC05", "1LEIC06", "1LEIC07", "1LEIC08", "1LEIC09", "1LEIC10", "1LEIC11", "1LEIC12", "1LEIC13", "1LEIC14","1LEIC15", "1LEIC16","2LEIC01", "2LEIC02", "2LEIC03", "2LEIC04", "2LEIC05", "2LEIC06", "2LEIC07", "2LEIC08", "2LEIC09", "2LEIC10", "2LEIC11", "2LEIC12", "2LEIC13", "2LEIC14", "2LEIC15", "2LEIC16","3LEIC01", "3LEIC02", "3LEIC03", "3LEIC04", "3LEIC05", "3LEIC06", "3LEIC07", "3LEIC08", "3LEIC09", "3LEIC10", "3LEIC11", "3LEIC12" , "3LEIC13", "3LEIC14", "3LEIC15", "3LEIC16"};
-                while(true) {
-                    for (int i = 1; i<=12; i++){
-                        std::cout<<"L.EIC0"<< ((i<10) ? "0" : "" )<<i;
-                    }
-                    std::cout << "Insira a Turma (Exemplo: 3) : ";
-                    std::cin >> opcao_turma;
-                    std::transform(opcao_turma.begin(), opcao_turma.end(), opcao_turma.begin(), ::toupper);
-                    auto it = listar_turmas.find(opcao_turma);
-                    if(it != listar_turmas.end())
-                        break;
-                    std::cout << "Opcao nao valida, escolha outra opcao.\n";}
                 while (true){
-                    std::cout << "Insira a Disciplina (Exemplo: : ";
+                    for (std::string i : listar_disciplinas){
+                        std::cout<<i;
+                    }
+                    std::cout << "Insira a Disciplina: ";
                     std::cin >> opcao_disciplina;
                     auto it = listar_disciplinas.find(opcao_disciplina);
                     if(it != listar_disciplinas.end())
                         break;
                     std::cout << "Opcao nao valida, escolha outra opcao.\n";
                 }
+                while(true) {
+                    for (std::string i : listar_turmas){
+                        std::cout<<i;
+                    }
+                    std::cout << "Insira a Turma (Insira 0 para ver todas) : ";
+                    std::cin >> opcao_turma;
+                    std::transform(opcao_turma.begin(), opcao_turma.end(), opcao_turma.begin(), ::toupper);
+                    auto it = listar_turmas.find(opcao_turma);
+                    if(opcao_turma=="0" || it != listar_turmas.end())
+                        break;
+                    std::cout << "Opcao nao valida, escolha outra opcao.\n";}
+
                 for (auto i = estudantes_.begin(); i!= estudantes_.end(); i++) {
                     for (auto j = i->getTurmas().begin(); j!=i->getTurmas().end(); j++){
                         std::string code_turma = j->getCodTurma();
@@ -192,22 +195,6 @@ void Gestor::listarTurmas() const {
                 }
                 break;}
             case 3:
-                int opcao_disciplina;
-                while(true) {
-                    std::cout << "Insira a Disciplina: ";
-                    std::cin >> opcao_disciplina;
-                    if(opcao_turma <= 3 && opcao_menu_ >= 1)
-                        break;
-                    std::cout << "Opcao nao valida, escolha outra opcao.\n";
-                }
-                for (auto i = estudantes_.begin(); i!= estudantes_.end(); i++) {
-                    for (auto j = i->getTurmas().begin(); j!=i->getTurmas().end(); j++){
-                        int code = std::stoi(j->getCodTurma().substr(j->getCodTurma().size()-2,2));
-                        if (code == opcao_turma){
-                            std::cout<<i->getCodEstudante()<<"\t"<< i->getNome()<<"\n";
-                        }
-                    }
-                }
                 break;
             case 9:
                 flag = !flag;
@@ -215,13 +202,8 @@ void Gestor::listarTurmas() const {
             default:
                 exit(0);
         }
-        std::cout<< "Numero Estudante | Nome";
-        for (auto i = estudantes_.begin(); i!=estudantes_.end() ; i++){
-            std::cout<<i->getCodEstudante()<<"\t"<< i->getNome()<<"\n";
         }
-        break;
     }
-}
 
 
 
