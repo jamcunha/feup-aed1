@@ -14,7 +14,7 @@
 /**
  * @brief Cria um Gestor
  *
- * @details O gestor será utilizado para 
+ * @details O gestor será utilizado para
  */
 class Gestor {
 private:
