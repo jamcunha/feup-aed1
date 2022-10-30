@@ -8,14 +8,14 @@ class Pedido {
 private:
     Estudante estudante_;
     UCTurma turma_;
-
     // 1 -> remover estudante, 2 -> adicionar estudante, (adicionar mais)
     unsigned tipo_;
 
 public:
     Pedido(const Estudante &estudante, const UCTurma &turma, unsigned tipo);
 
-    Estudante getEstudante() const;
+    // O get é suposto ser const mas assim dá return à referencia do estudante para poder adicionar a turma antes de meter no set
+    Estudante &getEstudante() ;
     UCTurma getTurma() const;
     unsigned getTipo() const;
 };

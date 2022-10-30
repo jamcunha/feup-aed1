@@ -2,7 +2,7 @@
 
 Pedido::Pedido(const Estudante &estudante, const UCTurma &turma, unsigned int tipo): estudante_(estudante), turma_(turma), tipo_(tipo) {}
 
-Estudante Pedido::getEstudante() const {
+Estudante &Pedido::getEstudante() {
     return estudante_;
 }
 

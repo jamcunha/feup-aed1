@@ -15,16 +15,19 @@
 #include "OrdenarEstudantes.h"
 #include "Pedido.h"
 
+// Capacidade máxima da turma
+#define CAP 25
+
 class Gestor {
 private:
     std::set<Estudante, NomeCrescente> estudantes_;
     std::vector<TurmaH> horarios_;
     std::queue<Pedido> pedidos_;
-    std::map<UCTurma, unsigned> capacidade_;
+    std::map<UCTurma, int> capacidade_;
     std::list<Pedido> arquivo_;
 
     void removerEstudante(const Estudante &estudante);
-    bool adicionarEstudante(const Estudante &est, const UCTurma &turma);
+    bool adicionarEstudante(Estudante &est, const UCTurma &turma);
 
 public:
     Gestor();

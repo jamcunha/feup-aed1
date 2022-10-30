@@ -106,4 +106,40 @@ void Gestor::removerEstudante(const Estudante &estudante) {
     estudantes_.erase(it);
 }
 
+bool Gestor::adicionarEstudante(Estudante &est, const UCTurma &turma) {
+    // Verificar se a turma possui vaga
+    if(capacidade_.at(turma)+1 > CAP)
+        return false;
+
+    // Verificar se a alteração não provoca desiquilibrio entre turmas
+    // Talvez otimizar com o find do std::map [https://cplusplus.com/reference/map/map/find/]
+    for(auto it = capacidade_.begin(); it != capacidade_.end(); it++) {
+        if(it->first.getCodUC() == turma.getCodUC() && abs((capacidade_.at(turma)+1)-it->second) >= 4) {
+            return false;
+        }
+    }
+
+    // Verificar se o horário é compatível
+    auto horario = std::find(horarios_.begin(), horarios_.end(), TurmaH(turma));
+    for(const UCTurma &i: est.getTurmas()) {
+        auto hor_i = std::find(horarios_.begin(), horarios_.end(), TurmaH(i));
+        if(!hor_i->isCompatible(*horario))
+            return false;
+    }
+
+    auto it = estudantes_.find(est);
+    if(it != estudantes_.end()) {
+        auto &temp = const_cast<Estudante &>(*it);
+
+        capacidade_.at(turma)++;
+        temp.addTurma(turma);
+    } else {
+        capacidade_.at(turma)++;
+        est.addTurma(turma);
+
+        estudantes_.insert(est);
+    }
+    return true;
+}
+
 void Gestor::mostrarMenu() {}
