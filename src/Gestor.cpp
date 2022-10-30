@@ -156,7 +156,7 @@ void Gestor::listarTurmas() const {
                 }
                 break;
             }
-            case 2:
+            case 2:{
                 //passar para função?
                 std::string opcao_turma;
                 std::string opcao_disciplina;
@@ -190,7 +190,7 @@ void Gestor::listarTurmas() const {
                         }
                     }
                 }
-                break;
+                break;}
             case 3:
                 int opcao_disciplina;
                 while(true) {
