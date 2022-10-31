@@ -103,8 +103,6 @@ void Gestor::listarEstudantes() const {
         std::cout << "|------------------------------------------------------|\n";
         std::cout << "| 1 - Ordenar por nome                                 |\n";
         std::cout << "| 2 - Ordenar por codico estudante                     |\n";
-        std::cout << "| 3 - Ordenar                                      |\n";
-        std::cout << "| 4 -                                                  |\n";
         std::cout << "|                                                      |\n";
         std::cout << "| 9 - Crescente/Decrescente " << "(" << (flag ? "Crescente)  " : "Decrescente)") << "              |\n";
         std::cout << "| 0 - Sair                                             |\n";
@@ -119,11 +117,29 @@ void Gestor::listarEstudantes() const {
         }
         switch(opcao_menu_) {
             case 1:
-                //set(ordenarNome);
+                if (!flag) {
+                    std::set<Estudante, NomeDecrescente> estudanteslist;
+                    for (auto i: estudantes_) {
+                        estudanteslist.insert(i);
+                    }
+                }
+                else
+                    std::set<Estudante,NomeCrescente> estudanteslist = estudantes_;
                 break;
 
             case 2:
-                //set(ordenarCODUC);
+                if (!flag) {
+                    std::set<Estudante, CodEstudanteCrescente> estudanteslist;
+                    for (auto i: estudantes_) {
+                        estudanteslist.insert(i);
+                    }
+                }
+                else{
+                    std::set<Estudante, CodEstudanteDecrescente> estudanteslist;
+                    for (auto i: estudantes_) {
+                        estudanteslist.insert(i);
+                    }
+                }
                 break;
             case 3:
 
@@ -135,7 +151,7 @@ void Gestor::listarEstudantes() const {
                 exit(0);
         }
         std::cout<< "Numero Estudante | Nome";
-        for (auto i = estudantes_.begin(); i!=estudantes_.end() ; i++){
+        for (auto i = estudanteslist.begin(); i!=estudanteslist.end() ; i++){
             std::cout<<i->getCodEstudante()<<"\t"<< i->getNome()<<"\n";
         }
     }
@@ -149,8 +165,6 @@ void Gestor::listarTurmas() const {
         std::cout << "|------------------------------------------------------|\n";
         std::cout << "| 1 - Ver Estudantes por Ano                           |\n";
         std::cout << "| 2 - Ver Estudantes por Disciplina                    |\n";
-        std::cout << "| 3 -                                                  |\n";
-        std::cout << "| 4 -                                                  |\n";
         std::cout << "|                                                      |\n";
         std::cout << "| 9 - Crescente/Decrescente " << "(" << (flag ? "Crescente  " : "Decrescente") << "              |\n";
         std::cout << "| 0 - Sair                                             |\n";
@@ -211,7 +225,17 @@ void Gestor::listarTurmas() const {
                     if(opcao_turma=="0" || it != listar_turmas.end())
                         break;
                     std::cout << "Opcao nao valida, escolha outra opcao.\n";}
-
+                if (opcao_turma=="0"){
+                    for (auto i = estudantes_.begin(); i!= estudantes_.end(); i++) {
+                        for (auto j = i->getTurmas().begin(); j!=i->getTurmas().end(); j++){
+                            std::string code_disciplina = j->getCodUC();
+                            if (code_disciplina == opcao_disciplina){
+                                std::cout<<i->getCodEstudante()<<"\t"<< i->getNome()<<"\n";
+                            }
+                        }
+                    }
+                    break;
+                }
                 for (auto i = estudantes_.begin(); i!= estudantes_.end(); i++) {
                     for (auto j = i->getTurmas().begin(); j!=i->getTurmas().end(); j++){
                         std::string code_turma = j->getCodTurma();
@@ -221,7 +245,8 @@ void Gestor::listarTurmas() const {
                         }
                     }
                 }
-                break;}
+                break;
+            }
             case 3:
                 break;
             case 9:
