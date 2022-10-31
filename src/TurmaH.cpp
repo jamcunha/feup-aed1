@@ -14,6 +14,23 @@ void TurmaH::addAula(const Aula &aula) {
     horario_.push_back(aula);
 }
 
+bool TurmaH::isCompatible(const TurmaH &horario) const {
+    for(const Aula &aula : horario.getHorario()) {
+        if(aula.getTipo() == "T")
+            continue;
+        for(const Aula &it : horario_) {
+            if(it.getTipo() == "T")
+                continue;
+            if(aula.getDia() == it.getDia() && (
+                    (aula.getInicio() >= it.getInicio() && aula.getInicio() <= it.getFim() ||
+                    (aula.getFim() >= it.getInicio() && aula.getFim() <= it.getFim()))))
+                return false;
+        }
+    }
+
+    return true;
+}
+
 bool TurmaH::operator==(const TurmaH &turma) const {
     return (turma_ == turma.getTurma());
 }
