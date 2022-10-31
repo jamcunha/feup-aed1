@@ -3,20 +3,45 @@
 
 #include "Estudante.h"
 #include "UCTurma.h"
-
+/**
+ *
+ */
 class Pedido {
 private:
+    /**
+     *
+     */
     Estudante estudante_;
+    /**
+     *
+     */
     UCTurma turma_;
-    // 1 -> remover estudante, 2 -> adicionar estudante, (adicionar mais)
+    /**
+     * @details 1 -> remover estudante, 2 -> adicionar estudante, (adicionar mais).
+     */
     unsigned tipo_;
 
 public:
+    //Construtores
+    /**
+     *
+     * @param estudante
+     * @param turma
+     * @param tipo
+     */
     Pedido(const Estudante &estudante, const UCTurma &turma, unsigned tipo);
-
-    // O get é suposto ser const mas assim dá return à referencia do estudante para poder adicionar a turma antes de meter no set
+    /**
+     * @details Não é usado o const , para poder adicionar a turma antes de meter no set através da referência do estudante.
+     * @return
+     */
     Estudante &getEstudante() ;
+    /**
+     * @return
+     */
     UCTurma getTurma() const;
+    /**
+     * @return
+     */
     unsigned getTipo() const;
 };
 
