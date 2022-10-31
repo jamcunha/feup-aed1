@@ -18,6 +18,8 @@ public:
     std::list<UCTurma> getTurmas() const;
 
     void addTurma(const UCTurma &turma);
+    UCTurma remTurma(const UCTurma &turma);
+    UCTurma remTurma(const std::string &cod_uc);
 
     bool operator==(const Estudante &est) const;
     bool operator!=(const Estudante &est) const;

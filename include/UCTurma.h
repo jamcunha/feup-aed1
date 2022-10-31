@@ -9,10 +9,13 @@ private:
     std::string cod_turma_;
 
 public:
+    UCTurma();
     UCTurma(const std::string &cod_uc, const std::string &cod_turma);
 
     std::string getCodUC() const;
     std::string getCodTurma() const;
+
+    bool isValid() const;
 
     bool operator==(const UCTurma &turma) const;
     bool operator!=(const UCTurma &turma) const;

@@ -8,7 +8,7 @@ class Pedido {
 private:
     Estudante estudante_;
     UCTurma turma_;
-    // 1 -> remover estudante, 2 -> adicionar estudante, (adicionar mais)
+    // 1 -> remover estudante, 2 -> adicionar estudante, 3 -> alterar turma
     unsigned tipo_;
 
 public:
