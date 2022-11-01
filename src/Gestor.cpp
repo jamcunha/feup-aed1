@@ -102,6 +102,11 @@ void Gestor::processarPedidos() {
                 if(!flag)
                     arquivo_.push_back(pedido);
                 break;
+            case 4:
+                flag = alterarTurmas(pedido.getEstudante(), pedido.getTurmas());
+                if(!flag)
+                    arquivo_.push_back(pedido);
+                break;
         }
     }
 }
@@ -188,7 +193,58 @@ bool Gestor::alterarTurma(Estudante &est, const UCTurma &turma) {
     capacidade_.at(turma)++;
     temp.addTurma(turma);
 
-    estudantes_.insert(est);
+    return true;
+}
+
+bool Gestor::alterarTurmas(Estudante &est, const std::list<UCTurma> &turmas) {
+    // Verificar se o estudante existe
+    auto it = estudantes_.find(est);
+    if(it == estudantes_.end())
+            return false;
+
+    auto &temp = const_cast<Estudante &>(*it);
+
+    // Verificação para cada turma
+    for(auto it_turma = turmas.begin(); it_turma != turmas.end(); it_turma++) {
+        // Verificar se a turma possui vaga
+        if(capacidade_.at(*it_turma)+1 > CAP)
+            return false;
+
+        // Verificar se o estudante está na UC
+        UCTurma rem_turma = temp.remTurma(it_turma->getCodUC());
+        if(!rem_turma.isValid())
+            return false;
+
+        capacidade_.at(rem_turma)--;
+        // Verificar se a alteração não provoca desiquilibrio entre turmas
+        // Talvez otimizar com o find do std::map [https://cplusplus.com/reference/map/map/find/]
+        for(auto it = capacidade_.begin(); it != capacidade_.end(); it++) {
+            if(it->first.getCodUC() == it_turma->getCodUC() && abs((capacidade_.at(*it_turma)+1)-it->second) >= 4) {
+                capacidade_.at(rem_turma)++;
+                temp.addTurma(rem_turma);
+                return false;
+            }
+        }
+
+        // Verificar se o horário é compatível
+        auto horario = std::find(horarios_.begin(), horarios_.end(), TurmaH(*it_turma));
+        for(const UCTurma &i: est.getTurmas()) {
+            auto hor_i = std::find(horarios_.begin(), horarios_.end(), TurmaH(i));
+            if(!hor_i->isCompatible(*horario)) {
+                capacidade_.at(rem_turma)++;
+                temp.addTurma(rem_turma);
+                return false;
+            }
+        }
+    }
+
+    for(auto it_turma = turmas.begin(); it_turma != turmas.end(); it_turma++) {
+        UCTurma rem_turma = temp.remTurma(it_turma->getCodUC());
+        capacidade_.at(rem_turma)--;
+
+        capacidade_.at(*it_turma)++;
+        temp.addTurma(*it_turma);
+    }
 
     return true;
 }
