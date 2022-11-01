@@ -39,12 +39,24 @@ public:
     std::list<Aula> getHorario() const;
     //Adicionar
     /**
-     *Adiciona uma nova aula ao horário.
+     * Adiciona uma nova aula ao horário.
      * @param aula Nova aula a adicionar.
      */
     void addAula(const Aula &aula);
+    /**
+     * Verifica se o horário é viável, ou seja, não há aulas sobrepostas do tipo TP OU PL.
+     * @details Complexidade: 0(n^2).
+     * @param horario Horario associado á turma.
+     * @return True-Se o horário for possível.
+     * @return False-Se o horário tiver aulas sobrepostas.
+     */
     bool isCompatible(const TurmaH &horario) const;
-
+    /**
+     * Compara se a turma1 é igual á turma2.
+     * @param turma turma a ser comparada.
+     * @return True se forem da mesma turma.
+     * @return False se forem de turmas diferentes.
+     */
     bool operator==(const TurmaH &turma) const;
     /**
      * Compara se a turma1 é diferente da turma2.

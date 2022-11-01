@@ -50,18 +50,34 @@ private:
      */
     std::list<Pedido> arquivo_;
     /**
-     *@details Remove um estudante de uma turma X. Complexidade: O(1).
+     * @brief Remove um estudante de uma turma X. Complexidade: O(1).
      * @param estudante Estudante a remover.
      */
     void removerEstudante(const Estudante &estudante);
     /**
-     * @details Adiciona um estudante a uma turma X. Complexidade: O(2n).
+     * @brief Adiciona um estudante a uma turma X. Complexidade: O(2n).
      * @param est Estudante a ser adicionado.
      * @param turma Turma e Unidade Curricular associada.
      * @return
      */
     bool adicionarEstudante(Estudante &est, const UCTurma &turma);
+    /**
+     * @brief Verifica se é possível alterar a turma de um estudante.
+     * @details Complexidade: O(2n).
+     * @param est Estudante que efetuou o pedido.
+     * @param turma Turma a ser alterada.
+     * @return True-Se for possível alterar.
+     * @return False-Se não for possível alterar.
+     */
     bool alterarTurma(Estudante &est, const UCTurma &turma);
+    /**
+     * @brief Verifica se é possível alterar várias turma no qual um estudante pertence.
+     * @details Complexidade: O([2n^2]+n).
+     * @param est Estudante que efetuou o pedido.
+     * @param turmas Lista de turmas que o estudante frequenta.
+     * @return True-Se for possível alterar.
+     * @return False-Se não for possível alterar.
+     */
     bool alterarTurmas(Estudante &est, const std::list<UCTurma> &turmas);
 
 public:
@@ -85,10 +101,17 @@ public:
      */
     void adicionarPedido(unsigned tipo, const Estudante &est, const UCTurma &turma = UCTurma("", ""));
     /**
-     * @brief Resolve todos os pedidos.
-     * @details A separação dos pedidos possiveis e impossíveis é feita aqui.
+     * @brief Overloading da função adicionarPedido para poder adicionar um pedido que engloba mais que uma turma.
+     * @param tipo Tipo de pedido. 1 -> remover estudante, 2 -> adicionar estudante, (adicionar mais).
+     * @param est Estudante que efetuou o pedido.
+     * @param turmas Lista turmas associadas ao estudante.
      */
     void adicionarPedido(unsigned tipo, const Estudante &est, const std::list<UCTurma> &turmas);
+
+    /**
+    * @brief Resolve todos os pedidos.
+    * @details A separação dos pedidos possiveis e impossíveis é feita aqui.
+    */
     void processarPedidos();
     /**
      * @brief Abre o menú de opções.

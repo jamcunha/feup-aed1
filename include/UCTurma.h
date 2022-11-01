@@ -17,7 +17,6 @@ private:
     std::string cod_turma_;
 
 public:
-<<<<<<< HEAD
     //Construtores
     /**
      *Cria uma associação entre a turma e a unidade curricular.
@@ -25,6 +24,11 @@ public:
      * @param cod_turma Turma.
      */
     UCTurma();
+    /**
+     * Overloading da função UC turma deixando a opção de criar uma nova associação entre uma turma e uma UC.
+     * @param cod_uc Unidade Curricular.
+     * @param cod_turma Turma.
+     */
     UCTurma(const std::string &cod_uc, const std::string &cod_turma);
     //"Getters"
     /**
@@ -35,17 +39,18 @@ public:
      * @return Da Turma.
      */
     std::string getCodTurma() const;
-
+    /**
+     * Verifica se o código da unidade curricular e da turma existem.
+     * @return True- Se ambos forem validos (não vazios).
+     * @return False- Se um dos dois estiver vazio.
+     */
+    bool isValid() const;
     //Operadores
     /**
      * @param turma turma e unidade curricular a ser comparda.
      * @return True se ambas turmas e UC forem iguais.
      * @return False se tiverem turma ou UC diferente.
      */
-
-    bool isValid() const;
-
-
     bool operator==(const UCTurma &turma) const;
     /**
      * @param turma turma e unidade curricular a ser comparda.
@@ -53,8 +58,13 @@ public:
      * @return False se ambas turmas e UC forem iguais.
      */
     bool operator!=(const UCTurma &turma) const;
-
-    // Para poder usar o std::pair
+    /**
+     * Compara o código de ambas as turmas.
+     * @details Criada para poder usar o std::pair
+     * @param turma
+     * @return True- Se o código da turma1 for menor que o da turma2.
+     * @return False- Se o código da turma1 for maior ou igual que o da turma2.
+     */
     bool operator<(const UCTurma &turma) const;
 };
 
