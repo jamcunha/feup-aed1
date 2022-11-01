@@ -28,6 +28,8 @@ private:
 
     void removerEstudante(const Estudante &estudante);
     bool adicionarEstudante(Estudante &est, const UCTurma &turma);
+    bool alterarTurma(Estudante &est, const UCTurma &turma);
+    bool alterarTurmas(Estudante &est, const std::list<UCTurma> &turmas);
 
 public:
     Gestor();
