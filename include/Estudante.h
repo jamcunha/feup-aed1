@@ -49,7 +49,17 @@ public:
      * @param turma nova turma do estudante
      */
     void addTurma(const UCTurma &turma);
+    /**
+     * @brief Remove um turma.
+     * @param turma Turma e UC associada.
+     * @return Turma removida.
+     */
     UCTurma remTurma(const UCTurma &turma);
+    /**
+     * @brief Overloading da remTurma para dar uma opçõo de remover a turma com o código da unidade curricular que é unica.
+     * @param cod_uc Código da UC.
+     * @return Turma removida.
+     */
     UCTurma remTurma(const std::string &cod_uc);
     //Operadores
     /**
