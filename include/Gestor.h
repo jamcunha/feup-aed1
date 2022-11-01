@@ -32,32 +32,32 @@ private:
      */
     std::set<Estudante, NomeCrescente> estudantes_;
     /**
-     *@brief Lista de horários
+     *@brief Lista de horários.
      */
     std::vector<TurmaH> horarios_;
     /**
-     *@brief Fila de pedidos
+     *@brief Fila de pedidos.
      *
      * @details É usado o "FIFO(first in first out)".
      */
     std::queue<Pedido> pedidos_;
     /**
-     *@brief Número de estudantes inscritos numa turma.
+     *@brief Número de estudantes inscritos por turma.
      */
     std::map<UCTurma, int> capacidade_;
     /**
-     *@brief
+     *@brief Pedidos arquivados.
      */
     std::list<Pedido> arquivo_;
     /**
-     *
-     * @param estudante
+     *@details Remove um estudante de uma turma X. Complexidade: O(1).
+     * @param estudante Estudante a remover.
      */
     void removerEstudante(const Estudante &estudante);
     /**
-     *
-     * @param est
-     * @param turma
+     * @details Adiciona um estudante a uma turma X. Complexidade: O(2n).
+     * @param est Estudante a ser adicionado.
+     * @param turma Turma e Unidade Curricular associada.
      * @return
      */
     bool adicionarEstudante(Estudante &est, const UCTurma &turma);
@@ -65,28 +65,30 @@ private:
 public:
     //Construtores
     /**
-     *
+     * @brief Cria um novo gestor.
      */
     Gestor();
     /**
-     *
+     * @brief Abre os ficheiros para leitura.
+     * @details Complexidade: O(3n).
      */
     void lerFicheiros();
     /**
      *
-     * @param tipo
-     * @param est
-     * @param turma
+     * @param tipo Tipo de pedido. 1 -> remover estudante, 2 -> adicionar estudante, (adicionar mais).
+     * @param est Estudante que efetuou o pedido.
+     * @param turma Turma e Unidade Curricular associada ao estudante.
      *
      * @details Adicionado um valor default à turma pois não é necessária para remover estudantes
      */
     void adicionarPedido(unsigned tipo, const Estudante &est, const UCTurma &turma = UCTurma("", ""));
     /**
-     *
+     * @brief Resolve todos os pedidos.
+     * @details A separação dos pedidos possiveis e impossíveis é feita aqui.
      */
     void processarPedidos();
     /**
-     *
+     * @brief Abre o menú de opções.
      */
     void mostrarMenu();
 };
