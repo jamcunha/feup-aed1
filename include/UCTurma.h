@@ -17,12 +17,14 @@ private:
     std::string cod_turma_;
 
 public:
+<<<<<<< HEAD
     //Construtores
     /**
      *Cria uma associação entre a turma e a unidade curricular.
      * @param cod_uc Unidade Curricular.
      * @param cod_turma Turma.
      */
+    UCTurma();
     UCTurma(const std::string &cod_uc, const std::string &cod_turma);
     //"Getters"
     /**
@@ -33,12 +35,17 @@ public:
      * @return Da Turma.
      */
     std::string getCodTurma() const;
+
     //Operadores
     /**
      * @param turma turma e unidade curricular a ser comparda.
      * @return True se ambas turmas e UC forem iguais.
      * @return False se tiverem turma ou UC diferente.
      */
+
+    bool isValid() const;
+
+
     bool operator==(const UCTurma &turma) const;
     /**
      * @param turma turma e unidade curricular a ser comparda.

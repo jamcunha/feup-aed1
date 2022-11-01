@@ -12,13 +12,9 @@ private:
      *
      */
     Estudante estudante_;
-    /**
-     *
-     */
-    UCTurma turma_;
-    /**
-     * @details 1 -> remover estudante, 2 -> adicionar estudante, (adicionar mais).
-     */
+    std::list<UCTurma> turmas_;
+    // 1 -> remover estudante, 2 -> adicionar estudante, 3 -> alterar turma
+
     unsigned tipo_;
 
 public:
@@ -30,6 +26,7 @@ public:
      * @param tipo
      */
     Pedido(const Estudante &estudante, const UCTurma &turma, unsigned tipo);
+    Pedido(const Estudante &estudante, const std::list<UCTurma> &turmas, unsigned tipo);
     /**
      * @details Não é usado o const , para poder adicionar a turma antes de meter no set através da referência do estudante.
      * @return
@@ -39,9 +36,7 @@ public:
      * @return
      */
     UCTurma getTurma() const;
-    /**
-     * @return
-     */
+    std::list<UCTurma> getTurmas() const;
     unsigned getTipo() const;
 };
 

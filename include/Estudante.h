@@ -49,6 +49,8 @@ public:
      * @param turma nova turma do estudante
      */
     void addTurma(const UCTurma &turma);
+    UCTurma remTurma(const UCTurma &turma);
+    UCTurma remTurma(const std::string &cod_uc);
     //Operadores
     /**
      * Compara a igualdade do nome e do código de estudante
