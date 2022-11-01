@@ -88,6 +88,7 @@ public:
      * @brief Resolve todos os pedidos.
      * @details A separação dos pedidos possiveis e impossíveis é feita aqui.
      */
+    void adicionarPedido(unsigned tipo, const Estudante &est, const std::list<UCTurma> &turmas);
     void processarPedidos();
     /**
      * @brief Abre o menú de opções.
