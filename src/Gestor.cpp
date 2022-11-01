@@ -82,6 +82,10 @@ void Gestor::adicionarPedido(unsigned tipo, const Estudante &est, const UCTurma 
     pedidos_.push(Pedido(est, turma, tipo));
 }
 
+void Gestor::adicionarPedido(unsigned tipo, const Estudante &est, const std::list<UCTurma> &turmas) {
+    pedidos_.push(Pedido(est, turmas, tipo));
+}
+
 void Gestor::processarPedidos() {
     while(!pedidos_.empty()) {
         Pedido pedido = pedidos_.front();

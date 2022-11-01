@@ -37,6 +37,7 @@ public:
     void lerFicheiros();
     // Adicionado um valor default à turma pois não é necessária para remover estudantes
     void adicionarPedido(unsigned tipo, const Estudante &est, const UCTurma &turma = UCTurma("", ""));
+    void adicionarPedido(unsigned tipo, const Estudante &est, const std::list<UCTurma> &turmas);
     void processarPedidos();
     void mostrarMenu();
 };
