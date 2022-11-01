@@ -14,6 +14,7 @@
 #include "TurmaH.h"
 #include "OrdenarEstudantes.h"
 #include "Pedido.h"
+#include "Aula.h"
 
 // Capacidade máxima da turma
 #define CAP 25
@@ -40,7 +41,7 @@ public:
     void listarEstudantes() const;
     void settings() const;
     void listarTurmas() const;
-
+    void listarHorario() const;
 
 };
 

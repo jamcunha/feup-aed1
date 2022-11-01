@@ -15,7 +15,7 @@ public:
     Pedido(const Estudante &estudante, const UCTurma &turma, unsigned tipo);
 
     // O get é suposto ser const mas assim dá return à referencia do estudante para poder adicionar a turma antes de meter no set
-    Estudante &getEstudante() ;
+    Estudante &getEstudante();
     UCTurma getTurma() const;
     unsigned getTipo() const;
 };
