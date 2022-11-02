@@ -10,6 +10,8 @@
 #include <algorithm>
 #include <queue>
 #include <map>
+#include <iomanip>
+
 #include "Estudante.h"
 #include "TurmaH.h"
 #include "OrdenarEstudantes.h"
@@ -28,6 +30,13 @@ private:
     std::map<UCTurma, int> capacidade_;
     std::list<Pedido> arquivo_;
 
+    // Ordenação true -> crescente, false -> decrescente
+    bool ordenacao_ = true;
+    // Filtragem pelo numero de ucs true -> maior que num_ucs, false -> menor que num_ucs
+    bool filtro_num_ucs_ = true;
+    // Usado para filtro_num_ucs
+    unsigned num_ucs_ = 0;
+
     void removerEstudante(const Estudante &estudante);
     bool adicionarEstudante(Estudante &est, const UCTurma &turma);
 
@@ -39,9 +48,9 @@ public:
     void processarPedidos();
     void mostrarMenu();
     void listarEstudantes() const;
-    void settings() const;
     void listarTurmas() const;
     void listarHorario() const;
+    void definicoes();
 
 };
 

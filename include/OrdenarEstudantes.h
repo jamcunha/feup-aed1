@@ -28,14 +28,14 @@ struct CodEstudanteDecrescente {
     }
 };
 
-struct NumUcOrdenadoCrescente{
+struct NumUcCrescente{
     bool operator()(const Estudante &left, const Estudante &right) {
-        return left.getTurmas().size()<right.getTurmas().size();
+        return (left.getTurmas().size()<=right.getTurmas().size());
     }
 };
-struct NumUcOrdenadoDecrescente{
+struct NumUcDecrescente{
     bool operator()(const Estudante &left, const Estudante &right) {
-        return left.getTurmas().size()>right.getTurmas().size();
+        return left.getTurmas().size()>=right.getTurmas().size();
     }
 };
 

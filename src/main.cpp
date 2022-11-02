@@ -3,6 +3,7 @@
 int main() {
     std::cout << "Hello, World!" << std::endl;
     Gestor gestor;
-    gestor.listarEstudantes();
+    gestor.lerFicheiros();
+    gestor.mostrarMenu();
     return 0;
 }
