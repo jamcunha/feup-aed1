@@ -50,12 +50,12 @@ private:
      */
     std::list<Pedido> arquivo_;
     /**
-     * @brief Remove um estudante de uma turma X. Complexidade: O(1).
+     * @brief Remove um estudante de uma turma X. Complexidade: O(log(n)).
      * @param estudante Estudante a remover.
      */
     void removerEstudante(const Estudante &estudante);
     /**
-     * @brief Adiciona um estudante a uma turma X. Complexidade: O(2n).
+     * @brief Adiciona um estudante a uma turma X. Complexidade: O(log(n)).
      * @param est Estudante a ser adicionado.
      * @param turma Turma e Unidade Curricular associada.
      * @return

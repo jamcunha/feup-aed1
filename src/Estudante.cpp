@@ -15,14 +15,14 @@ std::list<UCTurma> Estudante::getTurmas() const {
 }
 
 void Estudante::addTurma(const UCTurma &turma) {
-    turmas_.push_back(turma);
+    turmas_.push_back(turma);//O(1);
 }
 
 UCTurma Estudante::remTurma(const UCTurma &turma) {
-    for(auto it = turmas_.begin(); it != turmas_.end(); it++) {
+    for(auto it = turmas_.begin(); it != turmas_.end(); it++) { // O(log(n))
         if(*it == turma) {
             UCTurma rem = *it;
-            it = turmas_.erase(it);
+            it = turmas_.erase(it); //O(1)
             return rem;
         }
     }

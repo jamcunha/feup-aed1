@@ -40,6 +40,7 @@ public:
     //Adicionar
     /**
      * Adiciona uma nova aula ao horário.
+     * @details Complexidade: O(1).
      * @param aula Nova aula a adicionar.
      */
     void addAula(const Aula &aula);
@@ -57,6 +58,7 @@ public:
      * @return True se forem da mesma turma.
      * @return False se forem de turmas diferentes.
      */
+     //Operadores
     bool operator==(const TurmaH &turma) const;
     /**
      * Compara se a turma1 é diferente da turma2.
