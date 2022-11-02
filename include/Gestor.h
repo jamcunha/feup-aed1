@@ -42,6 +42,7 @@ public:
     void settings() const;
     void listarTurmas() const;
     void listarHorario() const;
+    void listarAlocacoes() const;
 
 };
 
