@@ -262,14 +262,11 @@ bool checkFileExists(std::string path) {
 }
 
 void Gestor::guardarFicheiros() {
-    // reescrever os alunos
-
     // Guardar arquivo no ficheiro
     bool existe = checkFileExists("../data/arquivo.csv");
     std::ofstream out_arquivo("../data/arquivo.csv", std::ios::app);
-    if(!existe) {
+    if(!existe)
         out_arquivo << "Tipo,CodEstudante,Nome,CodUc,CodTurma\n";
-    }
     for(Pedido &pedido: arquivo_) {
         for(UCTurma &turma: pedido.getTurmas()) {
             out_arquivo << pedido.getTipo() << ',';
@@ -278,6 +275,7 @@ void Gestor::guardarFicheiros() {
         }
     }
 
+    // Rescrever o ficheiro dos estudantes
     std::ofstream out_estudantes("../data/students_classes.csv");
     out_estudantes << "StudentCode,StudentName,UcCode,ClassCode\n";
 
