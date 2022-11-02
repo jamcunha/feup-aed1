@@ -296,12 +296,14 @@ void Gestor::listarHorario() const {
                 listagemhorario(quarta);
                 listagemhorario(quinta);
                 listagemhorario(sexta);
-
+                break;
             }
 
         }
-        if (flag)
+        if (flag){
             std::cout << "Opcao nao valida, escolha outra opcao.\n";
+            continue;}
+        break;
 
     }
 }
@@ -315,6 +317,8 @@ void Gestor::listarTurmas() const {
         std::cout << "|------------------------------------------------------|\n";
         std::cout << "| 1 - Ver Estudantes por Ano                           |\n";
         std::cout << "| 2 - Ver Estudantes por Disciplina                    |\n";
+        std::cout << "| 3 - Ver Disciplinas de um Estudante                  |\n";
+        std::cout << "| 4 - Ver Alocação por disciplina                      |\n";
         std::cout << "|                                                      |\n";
         std::cout << "| 9 - Crescente/Decrescente " << "(" << (flag ? "Crescente  " : "Decrescente") << "              |\n";
         std::cout << "| 0 - Sair                                             |\n";
@@ -399,8 +403,32 @@ void Gestor::listarTurmas() const {
                 }
                 break;
             }
-            case 3:
+            case 3:{
+                int numero_estudante;
+                while(true) {
+                    std::cout << "Insira o Código do Estudante (exemplo: 202025232): \n";
+                    std::cin >> numero_estudante;
+                    std::list<std::pair<Aula,std::string>> segunda,terca,quarta,quinta,sexta;
+                    bool flag;
+                    for (auto estudante_horario: estudantes_){
+                        if (estudante_horario.getCodEstudante()==numero_estudante){
+                            flag= false;
+                            std::cout<<numero_estudante<<"\t"<<estudante_horario.getNome()<<"\nTurmas Inscritas: \n";
+                            for (const UCTurma& i : estudante_horario.getTurmas()) {
+                                std::cout<<i.getCodUC()<<" - "<<i.getCodTurma()<<"\n";
+                            }
+                            break;
+
+                        }
+
+                    }
+                    if (flag){
+                        std::cout << "Opcao nao valida, escolha outra opcao.\n";
+                        continue;}
+                    break;
+                }
                 break;
+            }
             case 9:
                 flag = !flag;
                 break;
