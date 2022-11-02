@@ -277,5 +277,15 @@ void Gestor::guardarFicheiros() {
             out_arquivo << turma.getCodUC() << ',' << turma.getCodTurma() << '\n';
         }
     }
+
+    std::ofstream out_estudantes("../data/students_classes.csv");
+    out_estudantes << "StudentCode,StudentName,UcCode,ClassCode\n";
+
+    for(auto it = estudantes_.begin(); it != estudantes_.end(); it++) {
+        for(auto &turma: it->getTurmas()) {
+            out_estudantes << it->getCodEstudante() << ',' << it->getNome() << ',';
+            out_estudantes << turma.getCodUC() << ',' << turma.getCodTurma() << '\n';
+        }
+    }
 }
 
