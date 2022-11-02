@@ -8,7 +8,7 @@ class Pedido {
 private:
     Estudante estudante_;
     std::list<UCTurma> turmas_;
-    // 1 -> remover estudante, 2 -> adicionar estudante, 3 -> alterar turma
+    // 1 -> remover estudante, 2 -> adicionar estudante, 3 -> alterar turma, 4 -> alterar conjunto de turmas
     unsigned tipo_;
 
 public:

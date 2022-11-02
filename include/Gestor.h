@@ -40,6 +40,8 @@ public:
     void adicionarPedido(unsigned tipo, const Estudante &est, const std::list<UCTurma> &turmas);
     void processarPedidos();
     void mostrarMenu();
+
+    void guardarFicheiros();
 };
 
 #endif //FEUP_AED1_GESTOR_H
