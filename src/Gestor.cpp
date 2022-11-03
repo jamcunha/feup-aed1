@@ -152,46 +152,46 @@ void Gestor::listarEstudantes() const {
             case '1':
                 if (!ordenacao_) {
                     std::set<Estudante, NomeDecrescente> estudantes(estudantes_.begin(), estudantes_.end());
-                    std::cout << "Numero Estudante | Nome | Numero de UCs\n\n";
+                    std::cout << "Numero Estudante | Nome | Numero de UCs\n";
                     for (const auto &i: estudantes)
                         if((filtro_num_ucs_ && i.getTurmas().size() > num_ucs_) || (!filtro_num_ucs_ && i.getTurmas().size() < num_ucs_))
-                            std::cout << i.getCodEstudante() << "\t" << i.getNome() << "\t" << i.getTurmas().size() << "\n";
+                            std::cout << i.getCodEstudante() << "\t" << i.getNome() << "\t" << std::setfill(' ') << std::setw(30-i.getNome().size()) << i.getTurmas().size() << "\n";
                 } else {
-                    std::cout << "Numero Estudante | Nome\n";
+                    std::cout << "Numero Estudante | Nome | Numero de UCs\n";
                     for (const auto &i: estudantes_)
                         if((filtro_num_ucs_ && i.getTurmas().size() > num_ucs_) || (!filtro_num_ucs_ && i.getTurmas().size() < num_ucs_))
-                            std::cout << i.getCodEstudante() << "\t" << i.getNome() << "\t" << i.getTurmas().size() << "\n";
+                            std::cout << i.getCodEstudante() << "\t" << i.getNome() << std::setfill(' ') << std::setw(30-i.getNome().size()) << i.getTurmas().size() << "\n";
                 }
                 break;
 
             case '2':
                 if (!ordenacao_) {
                     std::set<Estudante, CodEstudanteDecrescente> estudantes(estudantes_.begin(), estudantes_.end());
-                    std::cout << "Numero Estudante | Nome\n\n";
+                    std::cout << "Numero Estudante | Nome | Numero de UCs\n";
                     for (const auto &i: estudantes)
                         if((filtro_num_ucs_ && i.getTurmas().size() > num_ucs_) || (!filtro_num_ucs_ && i.getTurmas().size() < num_ucs_))
-                            std::cout << i.getCodEstudante() << "\t" << i.getNome() << "\t" << i.getTurmas().size() << "\n";
+                            std::cout << i.getCodEstudante() << "\t" << i.getNome() << std::setfill(' ') << std::setw(30-i.getNome().size()) << i.getTurmas().size() << "\n";
                 } else {
                     std::set<Estudante, CodEstudanteCrescente> estudantes(estudantes_.begin(), estudantes_.end());
                     std::cout << "Numero Estudante | Nome\n\n";
                     for (const auto &i: estudantes)
                         if((filtro_num_ucs_ && i.getTurmas().size() > num_ucs_) || (!filtro_num_ucs_ && i.getTurmas().size() < num_ucs_))
-                            std::cout << i.getCodEstudante() << "\t" << i.getNome() << "\t" << i.getTurmas().size() << "\n";
+                            std::cout << i.getCodEstudante() << "\t" << i.getNome() << std::setfill(' ') << std::setw(30-i.getNome().size()) << i.getTurmas().size() << "\n";
                 }
                 break;
             case '3':
                 if (!ordenacao_) {
                     std::set<Estudante, NumUcDecrescente> estudantes(estudantes_.begin(), estudantes_.end());
-                    std::cout << "Numero Estudante | Nome\n\n";
+                    std::cout << "Numero Estudante | Nome | Numero de UCs\n";
                     for (const auto &i: estudantes)
                         if((filtro_num_ucs_ && i.getTurmas().size() > num_ucs_) || (!filtro_num_ucs_ && i.getTurmas().size() < num_ucs_))
-                            std::cout << i.getCodEstudante() << "\t" << i.getNome() << "\t" << i.getTurmas().size() << "\n";
+                            std::cout << i.getCodEstudante() << "\t" << i.getNome() << std::setfill(' ') << std::setw(30-i.getNome().size()) << i.getTurmas().size() << "\n";
                 } else {
                     std::set<Estudante, NumUcCrescente> estudantes(estudantes_.begin(), estudantes_.end());
-                    std::cout << "Numero Estudante | Nome\n\n";
+                    std::cout << "Numero Estudante | Nome | Numero de UCs\n";
                     for (const auto &i: estudantes)
                         if((filtro_num_ucs_ && i.getTurmas().size() > num_ucs_) || (!filtro_num_ucs_ && i.getTurmas().size() < num_ucs_))
-                            std::cout << i.getCodEstudante() << "\t" << i.getNome() << "\t" << i.getTurmas().size() << "\n";
+                            std::cout << i.getCodEstudante() << "\t" << i.getNome() << std::setfill(' ') << std::setw(30-i.getNome().size()) << i.getTurmas().size() << "\n";
                 }
                 break;
             default:
@@ -201,7 +201,6 @@ void Gestor::listarEstudantes() const {
         char tecla = 1;
         if(opcao_menu != '0') {
             std::cout << "\nPressione q para voltar ao menu: ";
-            std::cin >> tecla;
             while(tecla != 'q')
                 std::cin >> tecla;
         }
@@ -289,7 +288,6 @@ void Gestor::listarTurmas() const {
         char tecla = 1;
         if(opcao_menu != '0') {
             std::cout << "\nPressione q para voltar ao menu: ";
-            std::cin >> tecla;
             while(tecla != 'q')
                 std::cin >> tecla;
         }
@@ -309,8 +307,6 @@ void listagemHorario(std::list<std::pair<Aula,std::string>> &dia_semana){
         std::cout << i.second << " - " << "Horas: " << i.first.getInicio() << " - " << i.first.getFim() << '\t' << i.first.getTipo() << "\n";
     }
 }
-
-
 
 void Gestor::listarHorario() const {
     int numero_estudante;
@@ -382,7 +378,6 @@ void Gestor::listarHorario() const {
 
     char tecla = 1;
     std::cout << "\nPressione q para voltar ao menu: ";
-    std::cin >> tecla;
     while(tecla != 'q')
         std::cin >> tecla;
 }
@@ -513,7 +508,6 @@ void Gestor::listarAlocacoes() const {
         }
         char tecla = 1;
         std::cout << "\nPressione q para voltar ao menu: ";
-        std::cin >> tecla;
         while(tecla != 'q')
             std::cin >> tecla;
     }
