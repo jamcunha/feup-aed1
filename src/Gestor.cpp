@@ -98,7 +98,7 @@ void Gestor::mostrarMenu() {
         while(true) {
             std::cout << "\nOpcao: ";
             std::cin >> opcao_menu;
-            if(opcao_menu <= '3' && opcao_menu >= '0' || opcao_menu == '9')
+            if(opcao_menu <= '4' && opcao_menu >= '0' || opcao_menu == '9')
                 break;
             std::cout << "Opcao nao valida, escolha outra opcao.\n";
         }
