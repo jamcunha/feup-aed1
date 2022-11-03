@@ -117,7 +117,8 @@ void Gestor::processarPedidos() {
 
 void Gestor::removerEstudante(const Estudante &estudante) {
     auto it = estudantes_.find(estudante);
-    estudantes_.erase(it);
+    if(it != estudantes_.end())
+        estudantes_.erase(it);
 }
 
 bool Gestor::adicionarEstudante(Estudante &est, const UCTurma &turma) {
@@ -254,3 +255,35 @@ bool Gestor::alterarTurmas(Estudante &est, const std::list<UCTurma> &turmas) {
 }
 
 void Gestor::mostrarMenu() {}
+
+bool checkFileExists(std::string path) {
+    std::ifstream file(path);
+    return file.good();
+}
+
+void Gestor::guardarFicheiros() {
+    // Guardar arquivo no ficheiro
+    bool existe = checkFileExists("../data/arquivo.csv");
+    std::ofstream out_arquivo("../data/arquivo.csv", std::ios::app);
+    if(!existe)
+        out_arquivo << "Tipo,CodEstudante,Nome,CodUc,CodTurma\n";
+    for(Pedido &pedido: arquivo_) {
+        for(UCTurma &turma: pedido.getTurmas()) {
+            out_arquivo << pedido.getTipo() << ',';
+            out_arquivo << pedido.getEstudante().getCodEstudante() << ',' << pedido.getEstudante().getNome() << ',';
+            out_arquivo << turma.getCodUC() << ',' << turma.getCodTurma() << '\n';
+        }
+    }
+
+    // Rescrever o ficheiro dos estudantes
+    std::ofstream out_estudantes("../data/students_classes.csv");
+    out_estudantes << "StudentCode,StudentName,UcCode,ClassCode\n";
+
+    for(auto it = estudantes_.begin(); it != estudantes_.end(); it++) {
+        for(auto &turma: it->getTurmas()) {
+            out_estudantes << it->getCodEstudante() << ',' << it->getNome() << ',';
+            out_estudantes << turma.getCodUC() << ',' << turma.getCodTurma() << '\n';
+        }
+    }
+}
+
