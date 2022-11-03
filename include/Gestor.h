@@ -50,6 +50,7 @@ public:
     void listarEstudantes() const;
     void listarTurmas() const;
     void listarHorario() const;
+    void listarAlocacoes() const;
     void definicoes();
 
 };
