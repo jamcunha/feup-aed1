@@ -152,46 +152,52 @@ void Gestor::listarEstudantes() const {
             case '1':
                 if (!ordenacao_) {
                     std::set<Estudante, NomeDecrescente> estudantes(estudantes_.begin(), estudantes_.end());
-                    std::cout << "Numero Estudante | Nome | Numero de UCs\n";
+                    std::cout << "Numero Estudante | Nome                       | Numero de UCs\n";
+                    std::cout << "-------------------------------------------------------------\n";
                     for (const auto &i: estudantes)
                         if((filtro_num_ucs_ && i.getTurmas().size() > num_ucs_) || (!filtro_num_ucs_ && i.getTurmas().size() < num_ucs_))
-                            std::cout << i.getCodEstudante() << "\t" << i.getNome() << "\t" << std::setfill(' ') << std::setw(30-i.getNome().size()) << i.getTurmas().size() << "\n";
+                            std::cout << i.getCodEstudante() << "\t | " << i.getNome() << std::setfill(' ') << std::setw(29-i.getNome().size()) << "| " << i.getTurmas().size() << "\n";
                 } else {
-                    std::cout << "Numero Estudante | Nome | Numero de UCs\n";
+                    std::cout << "Numero Estudante | Nome                       | Numero de UCs\n";
+                    std::cout << "-------------------------------------------------------------\n";
                     for (const auto &i: estudantes_)
                         if((filtro_num_ucs_ && i.getTurmas().size() > num_ucs_) || (!filtro_num_ucs_ && i.getTurmas().size() < num_ucs_))
-                            std::cout << i.getCodEstudante() << "\t" << i.getNome() << std::setfill(' ') << std::setw(30-i.getNome().size()) << i.getTurmas().size() << "\n";
+                            std::cout << i.getCodEstudante() << "\t | " << i.getNome() << std::setfill(' ') << std::setw(29-i.getNome().size()) << "| " << i.getTurmas().size() << "\n";
                 }
                 break;
 
             case '2':
                 if (!ordenacao_) {
                     std::set<Estudante, CodEstudanteDecrescente> estudantes(estudantes_.begin(), estudantes_.end());
-                    std::cout << "Numero Estudante | Nome | Numero de UCs\n";
+                    std::cout << "Numero Estudante | Nome                       | Numero de UCs\n";
+                    std::cout << "-------------------------------------------------------------\n";
                     for (const auto &i: estudantes)
                         if((filtro_num_ucs_ && i.getTurmas().size() > num_ucs_) || (!filtro_num_ucs_ && i.getTurmas().size() < num_ucs_))
-                            std::cout << i.getCodEstudante() << "\t" << i.getNome() << std::setfill(' ') << std::setw(30-i.getNome().size()) << i.getTurmas().size() << "\n";
+                            std::cout << i.getCodEstudante() << "\t | " << i.getNome() << std::setfill(' ') << std::setw(29-i.getNome().size()) << "| " << i.getTurmas().size() << "\n";
                 } else {
                     std::set<Estudante, CodEstudanteCrescente> estudantes(estudantes_.begin(), estudantes_.end());
-                    std::cout << "Numero Estudante | Nome\n\n";
+                    std::cout << "Numero Estudante | Nome                       | Numero de UCs\n";
+                    std::cout << "-------------------------------------------------------------\n";
                     for (const auto &i: estudantes)
                         if((filtro_num_ucs_ && i.getTurmas().size() > num_ucs_) || (!filtro_num_ucs_ && i.getTurmas().size() < num_ucs_))
-                            std::cout << i.getCodEstudante() << "\t" << i.getNome() << std::setfill(' ') << std::setw(30-i.getNome().size()) << i.getTurmas().size() << "\n";
+                            std::cout << i.getCodEstudante() << "\t | " << i.getNome() << std::setfill(' ') << std::setw(29-i.getNome().size()) << "| " << i.getTurmas().size() << "\n";
                 }
                 break;
             case '3':
                 if (!ordenacao_) {
                     std::set<Estudante, NumUcDecrescente> estudantes(estudantes_.begin(), estudantes_.end());
-                    std::cout << "Numero Estudante | Nome | Numero de UCs\n";
+                    std::cout << "Numero Estudante | Nome                       | Numero de UCs\n";
+                    std::cout << "-------------------------------------------------------------\n";
                     for (const auto &i: estudantes)
                         if((filtro_num_ucs_ && i.getTurmas().size() > num_ucs_) || (!filtro_num_ucs_ && i.getTurmas().size() < num_ucs_))
-                            std::cout << i.getCodEstudante() << "\t" << i.getNome() << std::setfill(' ') << std::setw(30-i.getNome().size()) << i.getTurmas().size() << "\n";
+                            std::cout << i.getCodEstudante() << "\t | " << i.getNome() << std::setfill(' ') << std::setw(29-i.getNome().size()) << "| " << i.getTurmas().size() << "\n";
                 } else {
                     std::set<Estudante, NumUcCrescente> estudantes(estudantes_.begin(), estudantes_.end());
-                    std::cout << "Numero Estudante | Nome | Numero de UCs\n";
+                    std::cout << "Numero Estudante | Nome                       | Numero de UCs\n";
+                    std::cout << "-------------------------------------------------------------\n";
                     for (const auto &i: estudantes)
                         if((filtro_num_ucs_ && i.getTurmas().size() > num_ucs_) || (!filtro_num_ucs_ && i.getTurmas().size() < num_ucs_))
-                            std::cout << i.getCodEstudante() << "\t" << i.getNome() << std::setfill(' ') << std::setw(30-i.getNome().size()) << i.getTurmas().size() << "\n";
+                            std::cout << i.getCodEstudante() << "\t | " << i.getNome() << std::setfill(' ') << std::setw(29-i.getNome().size()) << "| " << i.getTurmas().size() << "\n";
                 }
                 break;
             default:
@@ -496,10 +502,10 @@ void Gestor::listarAlocacoes() const {
                         if(it->first.getCodUC() == opcao_uc)
                             capacidade_turma+=it->second;
                     }
-                    std::cout<<opcao_uc<<": "<<capacidade_turma<<" alunos";
+                    std::cout<<opcao_uc<<": "<<capacidade_turma<<" alunos\n";
                 }
                 else {
-                    std::cout<<opcao_uc<<" - "<< opcao_turma<<": "<<capacidade_.at(UCTurma(opcao_uc,opcao_turma))<<" alunos";
+                    std::cout<<opcao_uc<<" - "<< opcao_turma<<": "<<capacidade_.at(UCTurma(opcao_uc,opcao_turma))<<" alunos\n";
                 }
                 break;
             }

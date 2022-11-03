@@ -19,8 +19,8 @@ bool UCTurma::operator!=(const UCTurma &turma) const {
 }
 
 bool UCTurma::operator<(const UCTurma &turma) const {
-    if (cod_turma_ == turma.getCodTurma()){
-        return cod_uc_<turma.getCodUC();
+    if(cod_turma_ == turma.getCodTurma()) {
+        return cod_uc_ < turma.getCodUC();
     }
-    return cod_turma_<turma.getCodTurma();
+    return cod_turma_ < turma.getCodTurma();
 }
