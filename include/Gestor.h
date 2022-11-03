@@ -55,7 +55,7 @@ private:
      */
     void removerEstudante(const Estudante &estudante);
     /**
-     * @brief Adiciona um estudante a uma turma X. Complexidade: O(2n).
+     * @brief Adiciona um estudante a uma turma X. Complexidade: O(n).
      * @param est Estudante a ser adicionado.
      * @param turma Turma e Unidade Curricular associada.
      * @return
@@ -63,7 +63,7 @@ private:
     bool adicionarEstudante(Estudante &est, const UCTurma &turma);
     /**
      * @brief Verifica se é possível alterar a turma de um estudante.
-     * @details Complexidade: O(2n).
+     * @details Complexidade: O(n).
      * @param est Estudante que efetuou o pedido.
      * @param turma Turma a ser alterada.
      * @return True-Se for possível alterar.
@@ -72,7 +72,7 @@ private:
     bool alterarTurma(Estudante &est, const UCTurma &turma);
     /**
      * @brief Verifica se é possível alterar várias turma no qual um estudante pertence.
-     * @details Complexidade: O([2n^2]+n).
+     * @details Complexidade: O(n^2).
      * @param est Estudante que efetuou o pedido.
      * @param turmas Lista de turmas que o estudante frequenta.
      * @return True-Se for possível alterar.
@@ -88,12 +88,12 @@ public:
     Gestor();
     /**
      * @brief Abre os ficheiros para leitura.
-     * @details Complexidade: O(3n).
+     * @details Complexidade: O(n).
      */
     void lerFicheiros();
     /**
      *
-     * @param tipo Tipo de pedido. 1 -> remover estudante, 2 -> adicionar estudante, (adicionar mais).
+     * @param tipo Tipo de pedido (1 -> remover estudante, 2 -> adicionar estudante, 3 -> alterar turma, 4 -> alterar conjunto de turmas).
      * @param est Estudante que efetuou o pedido.
      * @param turma Turma e Unidade Curricular associada ao estudante.
      *
@@ -102,7 +102,7 @@ public:
     void adicionarPedido(unsigned tipo, const Estudante &est, const UCTurma &turma = UCTurma("", ""));
     /**
      * @brief Overloading da função adicionarPedido para poder adicionar um pedido que engloba mais que uma turma.
-     * @param tipo Tipo de pedido. 1 -> remover estudante, 2 -> adicionar estudante, (adicionar mais).
+     * @param tipo Tipo de pedido (1 -> remover estudante, 2 -> adicionar estudante, 3 -> alterar turma, 4 -> alterar conjunto de turmas).
      * @param est Estudante que efetuou o pedido.
      * @param turmas Lista turmas associadas ao estudante.
      */
