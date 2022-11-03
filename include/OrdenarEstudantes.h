@@ -39,10 +39,4 @@ struct NumUcDecrescente{
     }
 };
 
-struct horarioOrdenado {
-    bool operator()(const std::pair<Aula,std::string> &left, const std::pair<Aula,std::string> &right) {
-        return left.first.getInicio()<right.first.getInicio();
-    }
-};
-
 #endif //FEUP_AED1_ORDENARESTUDANTES_H

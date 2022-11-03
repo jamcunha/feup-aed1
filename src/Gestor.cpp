@@ -1,5 +1,6 @@
 #include "../include/Gestor.h"
 #include <iomanip>
+#include <cmath>
 
 Gestor::Gestor() {}
 
@@ -19,7 +20,7 @@ void Gestor::lerFicheiros() {
         std::string cod_uc, cod_turma;
 
         getline(ss, cod_uc, ',');
-        getline(ss, cod_turma, ',');
+        getline(ss, cod_turma, '\r');
 
         UCTurma turma = UCTurma(cod_uc, cod_turma);
         capacidade_.insert(std::pair<UCTurma, unsigned> (turma, 0));
@@ -32,7 +33,7 @@ void Gestor::lerFicheiros() {
         getline(ss, cod_estudante_string, ',');
         getline(ss, nome, ',');
         getline(ss, cod_uc, ',');
-        getline(ss, cod_turma, ',');
+        getline(ss, cod_turma, '\r');
 
         int cod_estudante = std::stoi(cod_estudante_string);
 
@@ -60,7 +61,7 @@ void Gestor::lerFicheiros() {
         getline(ss, dia, ',');
         getline(ss, inicio_string, ',');
         getline(ss, duracao_string, ',');
-        getline(ss, tipo, ',');
+        getline(ss, tipo, '\r');
 
         float inicio = std::stof(inicio_string);
         float duracao = std::stof(duracao_string);
@@ -108,6 +109,7 @@ void Gestor::mostrarMenu() {
                 listarTurmas();
                 break;
             case '3':
+                listarHorario();
                 break;
             case '9':
                 definicoes();
@@ -146,46 +148,46 @@ void Gestor::listarEstudantes() const {
             case '1':
                 if (!ordenacao_) {
                     std::set<Estudante, NomeDecrescente> estudantes(estudantes_.begin(), estudantes_.end());
-                    std::cout << "Numero Estudante | Nome | Numero de UCs\n";
+                    std::cout << "Numero Estudante | Nome | Numero de UCs\n\n";
                     for (const auto &i: estudantes)
                         if((filtro_num_ucs_ && i.getTurmas().size() > num_ucs_) || (!filtro_num_ucs_ && i.getTurmas().size() < num_ucs_))
-                            std::cout << i.getCodEstudante() << "\t   " << i.getNome() << "\t" << i.getTurmas().size() << "\n";
+                            std::cout << i.getCodEstudante() << "\t" << i.getNome() << "\t" << i.getTurmas().size() << "\n";
                 } else {
                     std::cout << "Numero Estudante | Nome\n";
                     for (const auto &i: estudantes_)
                         if((filtro_num_ucs_ && i.getTurmas().size() > num_ucs_) || (!filtro_num_ucs_ && i.getTurmas().size() < num_ucs_))
-                            std::cout << i.getCodEstudante() << "\t   " << i.getNome() << "\t" << i.getTurmas().size() << "\n";
+                            std::cout << i.getCodEstudante() << "\t" << i.getNome() << "\t" << i.getTurmas().size() << "\n";
                 }
                 break;
 
             case '2':
                 if (!ordenacao_) {
                     std::set<Estudante, CodEstudanteDecrescente> estudantes(estudantes_.begin(), estudantes_.end());
-                    std::cout << "Numero Estudante | Nome\n";
+                    std::cout << "Numero Estudante | Nome\n\n";
                     for (const auto &i: estudantes)
                         if((filtro_num_ucs_ && i.getTurmas().size() > num_ucs_) || (!filtro_num_ucs_ && i.getTurmas().size() < num_ucs_))
-                            std::cout << i.getCodEstudante() << "\t   " << i.getNome() << "\t" << i.getTurmas().size() << "\n";
+                            std::cout << i.getCodEstudante() << "\t" << i.getNome() << "\t" << i.getTurmas().size() << "\n";
                 } else {
                     std::set<Estudante, CodEstudanteCrescente> estudantes(estudantes_.begin(), estudantes_.end());
-                    std::cout << "Numero Estudante | Nome\n";
+                    std::cout << "Numero Estudante | Nome\n\n";
                     for (const auto &i: estudantes)
                         if((filtro_num_ucs_ && i.getTurmas().size() > num_ucs_) || (!filtro_num_ucs_ && i.getTurmas().size() < num_ucs_))
-                            std::cout << i.getCodEstudante() << "\t   " << i.getNome() << "\t" << i.getTurmas().size() << "\n";
+                            std::cout << i.getCodEstudante() << "\t" << i.getNome() << "\t" << i.getTurmas().size() << "\n";
                 }
                 break;
             case '3':
                 if (!ordenacao_) {
                     std::set<Estudante, NumUcDecrescente> estudantes(estudantes_.begin(), estudantes_.end());
-                    std::cout << "Numero Estudante | Nome\n";
+                    std::cout << "Numero Estudante | Nome\n\n";
                     for (const auto &i: estudantes)
                         if((filtro_num_ucs_ && i.getTurmas().size() > num_ucs_) || (!filtro_num_ucs_ && i.getTurmas().size() < num_ucs_))
-                            std::cout << i.getCodEstudante() << "\t   " << i.getNome() << "\t" << i.getTurmas().size() << "\n";
+                            std::cout << i.getCodEstudante() << "\t" << i.getNome() << "\t" << i.getTurmas().size() << "\n";
                 } else {
                     std::set<Estudante, NumUcCrescente> estudantes(estudantes_.begin(), estudantes_.end());
-                    std::cout << "Numero Estudante | Nome\n";
+                    std::cout << "Numero Estudante | Nome\n\n";
                     for (const auto &i: estudantes)
                         if((filtro_num_ucs_ && i.getTurmas().size() > num_ucs_) || (!filtro_num_ucs_ && i.getTurmas().size() < num_ucs_))
-                            std::cout << i.getCodEstudante() << "\t   " << i.getNome() << "\t" << i.getTurmas().size() << "\n";
+                            std::cout << i.getCodEstudante() << "\t" << i.getNome() << "\t" << i.getTurmas().size() << "\n";
                 }
                 break;
             default:
@@ -194,18 +196,111 @@ void Gestor::listarEstudantes() const {
 
         char tecla = 1;
         if(opcao_menu != '0') {
-            std::cout << "Pressione q para voltar ao menu: ";
+            std::cout << "\nPressione q para voltar ao menu: ";
             std::cin >> tecla;
             while(tecla != 'q');
         }
     }
 }
 
-void listagemhorario(std::list<std::pair<Aula,std::string>> dia_semana){
+void Gestor::listarTurmas() const {
+    bool sair = false;
+    while(!sair) {
+        std::system("clear");
+        std::cout << "--------------------------------------------------------\n";
+        std::cout << "|                         MENU                         |\n";
+        std::cout << "|------------------------------------------------------|\n";
+        std::cout << "| 1 - Ver Estudantes por Ano                           |\n";
+        std::cout << "| 2 - Ver Estudantes por Disciplina                    |\n";
+        std::cout << "|                                                      |\n";
+        std::cout << "| 0 - Voltar ao menu principal                         |\n";
+        std::cout << "--------------------------------------------------------\n";
+        char opcao_menu = 1;
+        while(true) {
+            std::cout << "\nOpcao: ";
+            std::cin >> opcao_menu;
+            if(opcao_menu <= '2' && opcao_menu >= '0')
+                break;
+            std::cout << "Opcao nao valida, escolha outra opcao.\n";
+        }
+        switch(opcao_menu) {
+            case '1':
+                int opcao_ano;
+                while(true) {
+                    std::cout << "Insira o Ano: ";
+                    std::cin >> opcao_ano;
+                    if(opcao_ano <= 3 && opcao_ano >= 1)
+                        break;
+                    std::cout << "Opcao nao valida, escolha outra opcao.\n";
+                }
+
+                std::system("clear");
+                std::cout << "Estudantes do " << opcao_ano << "º Ano\n\n";
+                for (auto it = estudantes_.begin(); it!= estudantes_.end(); it++) {
+                    for (auto &j: it->getTurmas()){
+                        int code = (int)(j.getCodTurma()[0]) - '0';
+                        if (code == opcao_ano) {
+                            std::cout << it->getCodEstudante() << "\t" << it->getNome() << "\n";
+                            break;
+                        }
+                    }
+                }
+                break;
+            case '2': {
+                //passar para função?
+                std::string opcao_turma;
+                std::string opcao_uc;
+                std::cout << "\nInsira a Disciplina (ex: L.EIC001): ";
+                std::cin >> opcao_uc;
+                std::transform(opcao_uc.begin(), opcao_uc.end(), opcao_uc.begin(), ::toupper);
+
+                std::cout << "\nInsira a Turma (ex: 1LEIC01) (Insira 0 para ver todas) : ";
+                std::cin >> opcao_turma;
+                std::transform(opcao_turma.begin(), opcao_turma.end(), opcao_turma.begin(), ::toupper);
+
+                std::cout << '\n';
+                if(opcao_turma=="0"){
+                    for(auto it = estudantes_.begin(); it != estudantes_.end(); it++) {
+                        for(auto &j: it->getTurmas()) {
+                            if (j.getCodUC() == opcao_uc)
+                                std::cout << it->getCodEstudante() << "\t" << it->getNome() <<"\n";
+                        }
+                    }
+                } else {
+                    for(auto it = estudantes_.begin(); it != estudantes_.end(); it++) {
+                        for(auto &j: it->getTurmas()){
+                            if(j == UCTurma(opcao_uc, opcao_turma)){
+                                std::cout << it->getCodEstudante() << "\t" << it->getNome() <<"\n";
+                            }
+                        }
+                    }
+                }
+                break;
+            }
+            default:
+                sair = true;
+        }
+
+        char tecla = 1;
+        if(opcao_menu != '0') {
+            std::cout << "\nPressione q para voltar ao menu: ";
+            std::cin >> tecla;
+            while(tecla != 'q');
+        }
+    }
+}
+
+struct horarioOrdenado {
+    bool operator()(const std::pair<Aula,std::string> &left, const std::pair<Aula,std::string> &right) {
+        return left.first.getInicio() < right.first.getInicio();
+    }
+};
+
+void listagemHorario(std::list<std::pair<Aula,std::string>> &dia_semana){
     dia_semana.sort(horarioOrdenado());
-    std::cout<<dia_semana.begin()->first.getDia()<<":";
+    std::cout << dia_semana.begin()->first.getDia() << ":\n\n";
     for (const std::pair<Aula,std::string> &i : dia_semana){
-        std::cout<<i.second<<"-"<<i.first.getTipo()<<" Horas: "<<i.first.getInicio()<<"-"<<i.first.getFim()<<"\n";
+        std::cout << i.second << " - " << "Horas: " << i.first.getInicio() << " - " << i.first.getFim() << '\t' << i.first.getTipo() << "\n";
     }
 }
 
@@ -214,10 +309,15 @@ void listagemhorario(std::list<std::pair<Aula,std::string>> dia_semana){
 void Gestor::listarHorario() const {
     int numero_estudante;
     while(true) {
-        std::cout << "Insira o Código do Estudante (exemplo: 202025232): ";
-        std::cin >> numero_estudante;
+        while(true) {
+            std::cout << "Insira o Codigo do Estudante (exemplo: 202025232): ";
+            std::cin >> numero_estudante;
+            if(int(std::log10(numero_estudante)+1) == 9)
+                break;
+            std::cout << "Formato do Codigo de Estudante errado. \n\n";
+        }
         std::list<std::pair<Aula,std::string>> segunda,terca,quarta,quinta,sexta;
-        bool flag;
+        bool flag = true;;
         for (auto estudante_horario: estudantes_){
             if (estudante_horario.getCodEstudante()==numero_estudante){
                 flag= false;
@@ -246,123 +346,39 @@ void Gestor::listarHorario() const {
 
                     }
                 }
-                listagemhorario(segunda);
-                listagemhorario(terca);
-                listagemhorario(quarta);
-                listagemhorario(quinta);
-                listagemhorario(sexta);
-
+                if(!segunda.empty()) {
+                    std::cout << '\n';
+                    listagemHorario(segunda);
+                }
+                if(!terca.empty()) {
+                    std::cout << '\n';
+                    listagemHorario(terca);
+                }
+                if(!quarta.empty()) {
+                    std::cout << '\n';
+                    listagemHorario(quarta);
+                }
+                if(!quinta.empty()) {
+                    std::cout << '\n';
+                    listagemHorario(quinta);
+                }
+                if(!sexta.empty()) {
+                    std::cout << '\n';
+                    listagemHorario(sexta);
+                }
+                break;
             }
-
         }
         if (flag)
-            std::cout << "Opcao nao valida, escolha outra opcao.\n";
-
+            std::cout << "Estudante não encontrado.\n";
+        break;
     }
+
+    char tecla = 1;
+    std::cout << "\nPressione q para voltar ao menu: ";
+    std::cin >> tecla;
+    while(tecla != 'q');
 }
-
-void Gestor::listarTurmas() const {
-    bool flag = true;
-    while(true) {
-        std::system("clear");
-        std::cout << "--------------------------------------------------------\n";
-        std::cout << "|                         MENU                         |\n";
-        std::cout << "|------------------------------------------------------|\n";
-        std::cout << "| 1 - Ver Estudantes por Ano                           |\n";
-        std::cout << "| 2 - Ver Estudantes por Disciplina                    |\n";
-        std::cout << "|                                                      |\n";
-        std::cout << "| 9 - Crescente/Decrescente " << "(" << (flag ? "Crescente)  " : "Decrescente)") << "              |\n";
-        std::cout << "| 0 - Sair                                             |\n";
-        std::cout << "--------------------------------------------------------\n";
-        int opcao_menu_ = 1;
-        while(true) {
-            std::cout << "\nOpcao: ";
-            std::cin >> opcao_menu_;
-            if((opcao_menu_ <= 4 && opcao_menu_ >= 0) || opcao_menu_==9)
-                break;
-            std::cout << "Opcao nao valida, escolha outra opcao.\n";
-        }
-        switch(opcao_menu_) {
-            case 1:
-                int opcao_ano;
-                while(true) {
-                    std::cout << "Insira o Ano: ";
-                    std::cin >> opcao_ano;
-                    if(opcao_ano <= 3 && opcao_ano >= 1)
-                        break;
-                    std::cout << "Opcao nao valida, escolha outra opcao.\n";
-                }
-                for (auto i = estudantes_.begin(); i!= estudantes_.end(); i++) {
-                    for (auto j = i->getTurmas().begin(); j!=i->getTurmas().end(); j++){
-                        int code = (int)(j->getCodTurma()[0]);
-                        if (code == opcao_ano){
-                            std::cout<<i->getCodEstudante()<<"\t"<< i->getNome()<<"\n";
-
-                        }
-                    }
-                }
-                break;
-            case 2:{
-                //passar para função?
-                std::string opcao_turma;
-                std::string opcao_disciplina;
-                std::set<std::string> listar_disciplinas {"L.EIC001","L.EIC002", "L.EIC003", "L.EIC004", "L.EIC005", "L.EIC011", "L.EIC012", "L.EIC013", "L.EIC014", "L.EIC015", "L.EIC021", "L.EIC022", "L.EIC023", "L.EIC024", "L.EIC025", "UP001"};
-                std::set<std::string> listar_turmas {"1LEIC01", "1LEIC02", "1LEIC03", "1LEIC04", "1LEIC05", "1LEIC06", "1LEIC07", "1LEIC08", "1LEIC09", "1LEIC10", "1LEIC11", "1LEIC12", "1LEIC13", "1LEIC14","1LEIC15", "1LEIC16","2LEIC01", "2LEIC02", "2LEIC03", "2LEIC04", "2LEIC05", "2LEIC06", "2LEIC07", "2LEIC08", "2LEIC09", "2LEIC10", "2LEIC11", "2LEIC12", "2LEIC13", "2LEIC14", "2LEIC15", "2LEIC16","3LEIC01", "3LEIC02", "3LEIC03", "3LEIC04", "3LEIC05", "3LEIC06", "3LEIC07", "3LEIC08", "3LEIC09", "3LEIC10", "3LEIC11", "3LEIC12" , "3LEIC13", "3LEIC14", "3LEIC15", "3LEIC16"};
-                while (true){
-                    for (std::string i : listar_disciplinas){
-                        std::cout<<i;
-                    }
-                    std::cout << "Insira a Disciplina: ";
-                    std::cin >> opcao_disciplina;
-                    auto it = listar_disciplinas.find(opcao_disciplina);
-                    if(it != listar_disciplinas.end())
-                        break;
-                    std::cout << "Opcao nao valida, escolha outra opcao.\n";
-                }
-                while(true) {
-                    for (std::string i : listar_turmas){
-                        std::cout<<i;
-                    }
-                    std::cout << "Insira a Turma (Insira 0 para ver todas) : ";
-                    std::cin >> opcao_turma;
-                    std::transform(opcao_turma.begin(), opcao_turma.end(), opcao_turma.begin(), ::toupper);
-                    auto it = listar_turmas.find(opcao_turma);
-                    if(opcao_turma=="0" || it != listar_turmas.end())
-                        break;
-                    std::cout << "Opcao nao valida, escolha outra opcao.\n";}
-                if (opcao_turma=="0"){
-                    for (auto i = estudantes_.begin(); i!= estudantes_.end(); i++) {
-                        for (auto j = i->getTurmas().begin(); j!=i->getTurmas().end(); j++){
-                            std::string code_disciplina = j->getCodUC();
-                            if (code_disciplina == opcao_disciplina){
-                                std::cout<<i->getCodEstudante()<<"\t"<< i->getNome()<<"\n";
-
-                            }
-                        }
-                    }
-                    break;
-                }
-                for (auto i = estudantes_.begin(); i!= estudantes_.end(); i++) {
-                    for (auto j = i->getTurmas().begin(); j!=i->getTurmas().end(); j++){
-                        std::string code_turma = j->getCodTurma();
-                        std::string code_disciplina = j->getCodUC();
-                        if (code_turma == opcao_turma && code_disciplina == opcao_disciplina){
-                            std::cout<<i->getCodEstudante()<<"\t"<< i->getNome()<<"\n";
-                        }
-                    }
-                }
-                break;
-            }
-            case 3:
-                break;
-            case 9:
-                flag = !flag;
-                break;
-            default:
-                exit(0);
-        }
-        }
-    }
 
 void Gestor::definicoes() {
     bool sair = false;
@@ -401,8 +417,8 @@ void Gestor::definicoes() {
                     if(num_ucs_ < 100 && num_ucs_ >= 0)
                         break;
                     num_ucs_ = 0;
-                    std::cout << "Numero de UCs nao valido, insira um numero entre 0 e 99\n";
-                }
+                std::cout << "Numero de UCs nao valido, insira um numero entre 0 e 99\n";
+            }
                 break;
             default:
                 sair = true;
