@@ -117,6 +117,8 @@ public:
      * @brief Abre o menú de opções.
      */
     void mostrarMenu();
+
+    void guardarFicheiros();
 };
 
 #endif //FEUP_AED1_GESTOR_H

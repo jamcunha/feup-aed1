@@ -16,8 +16,9 @@ private:
      * @brief Lista de turmas associadas ao estudante.
      */
     std::list<UCTurma> turmas_;
+
     /**
-     * @brief Tipo de pedido (1 -> remover estudante, 2 -> adicionar estudante, 3 -> alterar turma).
+     * @brief Tipo de pedido (1 -> remover estudante, 2 -> adicionar estudante, 3 -> alterar turma, 4 -> alterar conjunto de turmas).
      */
     unsigned tipo_;
 
