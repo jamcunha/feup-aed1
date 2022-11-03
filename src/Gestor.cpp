@@ -438,7 +438,7 @@ void Gestor::listarAlocacoes() const {
         std::cout << "| 1 - Alocacoes por ano                                |\n";
         std::cout << "| 2 - Alocacoes por turma                              |\n";
         std::cout << "|                                                      |\n";
-        std::cout << "| 0 - Sair                                             |\n";
+        std::cout << "| 0 - Voltar ao menu principal                         |\n";
         std::cout << "--------------------------------------------------------\n";
         char opcao_menu;
         while(true) {
@@ -480,7 +480,7 @@ void Gestor::listarAlocacoes() const {
                 std::cout<<"3º Ano: "<<count3<<" alunos\n";
                 break;
             }
-            case '2':{
+            case '2': {
                 std::string opcao_turma;
                 std::string opcao_uc;
                 std::cout << "\nInsira a Disciplina (ex: L.EIC001): ";
@@ -490,7 +490,7 @@ void Gestor::listarAlocacoes() const {
                 std::cin >> opcao_turma;
                 std::transform(opcao_turma.begin(), opcao_turma.end(), opcao_turma.begin(), ::toupper);
                 std::cout << '\n';
-                if (opcao_turma=="0"){
+                if(opcao_turma=="0") {
                     int capacidade_turma=0;
                     for(auto it = capacidade_.begin(); it != capacidade_.end(); it++) {
                         if(it->first.getCodUC() == opcao_uc)
@@ -498,7 +498,7 @@ void Gestor::listarAlocacoes() const {
                     }
                     std::cout<<opcao_uc<<": "<<capacidade_turma<<" alunos";
                 }
-                else{
+                else {
                     std::cout<<opcao_uc<<" - "<< opcao_turma<<": "<<capacidade_.at(UCTurma(opcao_uc,opcao_turma))<<" alunos";
                 }
                 break;
@@ -506,10 +506,12 @@ void Gestor::listarAlocacoes() const {
             default:
                 sair=true;
         }
-        char tecla = 1;
-        std::cout << "\nPressione q para voltar ao menu: ";
-        while(tecla != 'q')
-            std::cin >> tecla;
+        if(opcao_menu != '0') {
+            char tecla = 1;
+            std::cout << "\nPressione q para voltar ao menu: ";
+            while(tecla != 'q')
+                std::cin >> tecla;
+        }
     }
 }
 
