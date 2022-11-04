@@ -24,7 +24,7 @@
 
 class Gestor {
 private:
-    std::set<Estudante, NumUcCrescente> estudantes_;
+    std::set<Estudante, CodEstudanteCrescente> estudantes_;
     std::vector<TurmaH> horarios_;
     std::queue<Pedido> pedidos_;
     std::map<UCTurma, int> capacidade_;
@@ -53,7 +53,7 @@ public:
     void mostrarMenu();
     void listarEstudantes() const;
     void listarTurmas() const;
-    void listarHorario() const;
+    void listarHorario();
     void listarAlocacoes() const;
     void listarPedidos();
     void definicoes();

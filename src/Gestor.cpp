@@ -389,7 +389,6 @@ void Gestor::mostrarMenu() {
 
 void Gestor::listarEstudantes() const {
     bool sair = false;
-    unsigned num_ucs = 0;
     while(!sair) {
         std::system("clear");
         std::cout << "--------------------------------------------------------\n";
@@ -397,7 +396,7 @@ void Gestor::listarEstudantes() const {
         std::cout << "|------------------------------------------------------|\n";
         std::cout << "| 1 - Listar por nome                                  |\n";
         std::cout << "| 2 - Listar por codico estudante                      |\n";
-        std::cout << "| 4 - Listar por numero de UCs                         |\n";
+        std::cout << "| 3 - Listar por numero de UCs                         |\n";
         std::cout << "|                                                      |\n";
         std::cout << "| 0 - Voltar ao menu principal                         |\n";
         std::cout << "--------------------------------------------------------\n";
@@ -575,7 +574,7 @@ void listagemHorario(std::list<std::pair<Aula,std::string>> &dia_semana){
     }
 }
 
-void Gestor::listarHorario() const {
+void Gestor::listarHorario(){
     int numero_estudante;
     while(true) {
         while(true) {
@@ -586,59 +585,57 @@ void Gestor::listarHorario() const {
             std::cout << "Formato do Codigo de Estudante errado. \n\n";
         }
         std::list<std::pair<Aula,std::string>> segunda,terca,quarta,quinta,sexta;
-        bool flag = true;;
-        for (auto estudante_horario: estudantes_){
-            if (estudante_horario.getCodEstudante()==numero_estudante){
-                flag= false;
-                for (const UCTurma &i : estudante_horario.getTurmas()){
-                    auto hor_i = std::find(horarios_.begin(), horarios_.end(), TurmaH(i));
-                    std::list<Aula> horario = hor_i->getHorario();
-                    for (const Aula &j : horario){
-                        switch(j.getDia()[0]) {
-                            case 'M':
-                                segunda.push_back(std::make_pair(j,i.getCodUC()));
+        auto it = estudantes_.find(Estudante(numero_estudante,""));
+        if (it != estudantes_.end()){
+            std::cout<<"\nHorario "<<it->getNome()<<"\n";
+            for (const UCTurma &i : it->getTurmas()){
+                auto hor_i = std::find(horarios_.begin(), horarios_.end(), TurmaH(i));
+                std::list<Aula> horario = hor_i->getHorario();
+                for (const Aula &j : horario){
+                    switch(j.getDia()[0]) {
+                        case 'M':
+                            segunda.push_back(std::make_pair(j,i.getCodUC()));
+                            break;
+                        case 'T':
+                            if (j.getDia() == "Tuesday"){
+                                terca.push_back(std::make_pair(j,i.getCodUC()));
                                 break;
-                            case 'T':
-                                if (j.getDia() == "Tuesday"){
-                                    terca.push_back(std::make_pair(j,i.getCodUC()));
-                                    break;
-                                }
-                                quinta.push_back(std::make_pair(j,i.getCodUC()));
-                                break;
-                            case 'W':
-                                quarta.push_back(std::make_pair(j,i.getCodUC()));
-                                break;
-                            case 'F':
-                                sexta.push_back(std::make_pair(j,i.getCodUC()));
-                                break;
-                        }
-
+                            }
+                            quinta.push_back(std::make_pair(j,i.getCodUC()));
+                            break;
+                        case 'W':
+                            quarta.push_back(std::make_pair(j,i.getCodUC()));
+                            break;
+                        case 'F':
+                            sexta.push_back(std::make_pair(j,i.getCodUC()));
+                            break;
                     }
+
                 }
-                if(!segunda.empty()) {
-                    std::cout << '\n';
-                    listagemHorario(segunda);
-                }
-                if(!terca.empty()) {
-                    std::cout << '\n';
-                    listagemHorario(terca);
-                }
-                if(!quarta.empty()) {
-                    std::cout << '\n';
-                    listagemHorario(quarta);
-                }
-                if(!quinta.empty()) {
-                    std::cout << '\n';
-                    listagemHorario(quinta);
-                }
-                if(!sexta.empty()) {
-                    std::cout << '\n';
-                    listagemHorario(sexta);
-                }
-                break;
             }
+            if(!segunda.empty()) {
+                std::cout << '\n';
+                listagemHorario(segunda);
+            }
+            if(!terca.empty()) {
+                std::cout << '\n';
+                listagemHorario(terca);
+            }
+            if(!quarta.empty()) {
+                std::cout << '\n';
+                listagemHorario(quarta);
+            }
+            if(!quinta.empty()) {
+                std::cout << '\n';
+                listagemHorario(quinta);
+            }
+            if(!sexta.empty()) {
+                std::cout << '\n';
+                listagemHorario(sexta);
+            }
+            break;
         }
-        if (flag)
+        else
             std::cout << "Estudante não encontrado.\n";
         break;
     }
