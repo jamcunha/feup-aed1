@@ -90,6 +90,7 @@ void Gestor::mostrarMenu() {
         std::cout << "| 2 - Ver Turmas                                       |\n";
         std::cout << "| 3 - Ver Horario                                      |\n";
         std::cout << "| 4 - Ver Alocacoes                                    |\n";
+        std::cout << "| 5 - Ver Pedidos                                      |\n";
         std::cout << "|                                                      |\n";
         std::cout << "| 9 - Definicoes                                       |\n";
         std::cout << "| 0 - Sair                                             |\n";
@@ -98,7 +99,7 @@ void Gestor::mostrarMenu() {
         while(true) {
             std::cout << "\nOpcao: ";
             std::cin >> opcao_menu;
-            if(opcao_menu <= '4' && opcao_menu >= '0' || opcao_menu == '9')
+            if(opcao_menu <= '5' && opcao_menu >= '0' || opcao_menu == '9')
                 break;
             std::cout << "Opcao nao valida, escolha outra opcao.\n";
         }
@@ -114,6 +115,9 @@ void Gestor::mostrarMenu() {
                 break;
             case '4':
                 listarAlocacoes();
+                break;
+            case '5':
+                listarPedidos();
                 break;
             case '9':
                 definicoes();
@@ -512,6 +516,44 @@ void Gestor::listarAlocacoes() const {
             std::cin >> tecla;
     }
 }
+void Gestor::listarPedidos(){
+    bool sair= false;
+    while(!sair) {
+        std::system("clear");
+        std::cout << "--------------------------------------------------------\n";
+        std::cout << "|                         MENU                         |\n";
+        std::cout << "|------------------------------------------------------|\n";
+        std::cout << "| 1 - Adicionar Estudante                              |\n";
+        std::cout << "| 2 - Remover Estudante                                |\n";
+        std::cout << "|                                                      |\n";
+        std::cout << "| 0 - Sair                                             |\n";
+        std::cout << "--------------------------------------------------------\n";
+        char opcao_menu;
+        while(true) {
+            std::cout << "\nOpcao: ";
+            std::cin >> opcao_menu;
+            if(opcao_menu <= '2' && opcao_menu >= '0')
+                break;
+            std::cout << "Opcao nao valida, escolha outra opcao.\n";
+        }
+        switch(opcao_menu) {
+            case '1':{
+
+                break;
+            }
+            case '2':{
+
+                break;
+            }
+            default:
+                sair=true;
+        }
+        char tecla = 1;
+        std::cout << "\nPressione q para voltar ao menu: ";
+        while(tecla != 'q')
+            std::cin >> tecla;
+    }
+}
 
 void Gestor::adicionarPedido(unsigned tipo, const Estudante &est, const UCTurma &turma) {
     pedidos_.push(Pedido(est, turma, tipo));
@@ -521,7 +563,6 @@ void Gestor::processarPedidos() {
     while(!pedidos_.empty()) {
         Pedido pedido = pedidos_.front();
         pedidos_.pop();
-
         bool flag;
         switch(pedido.getTipo()) {
             case 1:
@@ -535,6 +576,7 @@ void Gestor::processarPedidos() {
         }
     }
 }
+
 
 void Gestor::removerEstudante(const Estudante &estudante) {
     auto it = estudantes_.find(estudante);
