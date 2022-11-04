@@ -425,11 +425,13 @@ void Gestor::listarTurmas() const {
                 std::system("clear");
                 std::cout << "Estudantes do " << opcao_ano << "º Ano\n\n";
                 for (auto it = estudantes_.begin(); it!= estudantes_.end(); it++) {
-                    for (auto &j: it->getTurmas()){
-                        int code = (int)(j.getCodTurma()[0]) - '0';
-                        if (code == opcao_ano) {
-                            std::cout << it->getCodEstudante() << "\t" << it->getNome() << "\n";
-                            break;
+                    if((filtro_num_ucs_ && it->getTurmas().size() > num_ucs_) || (!filtro_num_ucs_ && it->getTurmas().size() < num_ucs_)) {
+                        for(auto &j: it->getTurmas()) {
+                            int code = (int)(j.getCodTurma()[0]) - '0';
+                            if(code == opcao_ano) {
+                                std::cout << it->getCodEstudante() << "\t" << it->getNome() << "\n";
+                                break;
+                            }
                         }
                     }
                 }
@@ -448,16 +450,20 @@ void Gestor::listarTurmas() const {
                 std::cout << '\n';
                 if(opcao_turma=="0"){
                     for(auto it = estudantes_.begin(); it != estudantes_.end(); it++) {
-                        for(auto &j: it->getTurmas()) {
-                            if (j.getCodUC() == opcao_uc)
-                                std::cout << it->getCodEstudante() << "\t" << it->getNome() <<"\n";
+                        if((filtro_num_ucs_ && it->getTurmas().size() > num_ucs_) || (!filtro_num_ucs_ && it->getTurmas().size() < num_ucs_)) {
+                            for(auto &j: it->getTurmas()) {
+                                if (j.getCodUC() == opcao_uc)
+                                    std::cout << it->getCodEstudante() << "\t" << it->getNome() <<"\n";
+                            }
                         }
                     }
                 } else {
                     for(auto it = estudantes_.begin(); it != estudantes_.end(); it++) {
-                        for(auto &j: it->getTurmas()){
-                            if(j == UCTurma(opcao_uc, opcao_turma)){
-                                std::cout << it->getCodEstudante() << "\t" << it->getNome() <<"\n";
+                        if((filtro_num_ucs_ && it->getTurmas().size() > num_ucs_) || (!filtro_num_ucs_ && it->getTurmas().size() < num_ucs_)) {
+                            for(auto &j: it->getTurmas()) {
+                                if(j == UCTurma(opcao_uc, opcao_turma)){
+                                    std::cout << it->getCodEstudante() << "\t" << it->getNome() <<"\n";
+                                }
                             }
                         }
                     }
@@ -779,10 +785,12 @@ void Gestor::listarPedidos() {
             default:
                 sair=true;
         }
-        char tecla = 1;
-        std::cout << "\nPressione q para voltar ao menu: ";
-        while(tecla != 'q')
-            std::cin >> tecla;
+        if(opcao_menu != '0') {
+            char tecla = 1;
+            std::cout << "\nPressione q para voltar ao menu: ";
+            while(tecla != 'q')
+                std::cin >> tecla;
+        }
     }
 }
 
