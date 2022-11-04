@@ -24,7 +24,7 @@
 
 class Gestor {
 private:
-    std::set<Estudante, NomeCrescente> estudantes_;
+    std::set<Estudante, NumUcCrescente> estudantes_;
     std::vector<TurmaH> horarios_;
     std::queue<Pedido> pedidos_;
     std::map<UCTurma, int> capacidade_;
