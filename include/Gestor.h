@@ -39,21 +39,26 @@ private:
 
     void removerEstudante(const Estudante &estudante);
     bool adicionarEstudante(Estudante &est, const UCTurma &turma);
+    bool alterarTurma(Estudante &est, const UCTurma &turma);
+    bool alterarTurmas(Estudante &est, const std::list<UCTurma> &turmas);
 
 public:
     Gestor();
     void lerFicheiros();
     // Adicionado um valor default à turma pois não é necessária para remover estudantes
     void adicionarPedido(unsigned tipo, const Estudante &est, const UCTurma &turma = UCTurma("", ""));
+    void adicionarPedido(unsigned tipo, const Estudante &est, const std::list<UCTurma> &turmas);
     void processarPedidos();
+
     void mostrarMenu();
     void listarEstudantes() const;
     void listarTurmas() const;
     void listarHorario() const;
     void listarAlocacoes() const;
-    void definicoes();
     void listarPedidos();
+    void definicoes();
 
+    void guardarFicheiros();
 };
 
 #endif //FEUP_AED1_GESTOR_H

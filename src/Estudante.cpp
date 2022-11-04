@@ -18,6 +18,28 @@ void Estudante::addTurma(const UCTurma &turma) {
     turmas_.push_back(turma);
 }
 
+UCTurma Estudante::remTurma(const UCTurma &turma) {
+    for(auto it = turmas_.begin(); it != turmas_.end(); it++) {
+        if(*it == turma) {
+            UCTurma rem = *it;
+            it = turmas_.erase(it);
+            return rem;
+        }
+    }
+    return UCTurma();
+}
+
+UCTurma Estudante::remTurma(const std::string &cod_uc) {
+    for(auto it = turmas_.begin(); it != turmas_.end(); it++) {
+        if(it->getCodUC() == cod_uc) {
+            UCTurma rem = *it;
+            it = turmas_.erase(it);
+            return rem;
+        }
+    }
+    return UCTurma();
+}
+
 bool Estudante::operator==(const Estudante &est) const {
     return (nome_ == est.getNome() && cod_estudante_ == est.getCodEstudante());
 }
