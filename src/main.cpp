@@ -5,5 +5,6 @@ int main() {
     Gestor gestor;
     gestor.lerFicheiros();
     gestor.mostrarMenu();
+    gestor.processarPedidos();
     return 0;
 }

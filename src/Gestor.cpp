@@ -80,6 +80,88 @@ void Gestor::lerFicheiros() {
     }
 }
 
+void Gestor::listarPedidos(){
+    bool sair= false;
+    while(!sair) {
+        std::system("clear");
+        std::cout << "--------------------------------------------------------\n";
+        std::cout << "|                         MENU                         |\n";
+        std::cout << "|------------------------------------------------------|\n";
+        std::cout << "| 1 - Remover Estudante                                |\n";
+        std::cout << "| 2 - Adicionar Estudante                              |\n";
+        std::cout << "| 3 - Alterar Turma                                    |\n";
+        std::cout << "|                                                      |\n";
+        std::cout << "| 0 - Sair                                             |\n";
+        std::cout << "--------------------------------------------------------\n";
+        char opcao_menu;
+        while(true) {
+            std::cout << "\nOpcao: ";
+            std::cin >> opcao_menu;
+            if(opcao_menu <= '2' && opcao_menu >= '0')
+                break;
+            std::cout << "Opcao nao valida, escolha outra opcao.\n";
+        }
+        std::string nome;
+        int cod;
+        std::cout<<"Insira o Nome do Estudante: ";
+        std::cin>>nome;
+        while(true) {
+            std::cout << "Insira o Codigo do Estudante (exemplo: 202025232): ";
+            std::cin >> cod;
+            if(int(std::log10(cod)+1) == 9)
+                break;
+            std::cout << "Formato do Codigo de Estudante errado. \n\n";
+        }
+        switch(opcao_menu) {
+            case '1':{
+                adicionarPedido(1,Estudante(cod,nome));
+                break;
+            }
+            case '2':{
+                std::string opcao_turma;
+                std::string opcao_uc;
+                std::cout << "\nInsira a Disciplina (ex: L.EIC001): ";
+                std::cin >> opcao_uc;
+                std::transform(opcao_uc.begin(), opcao_uc.end(), opcao_uc.begin(), ::toupper);
+
+                std::cout << "\nInsira a Turma (ex: 1LEIC01) (Insira 0 para ver todas) : ";
+                std::cin >> opcao_turma;
+                std::transform(opcao_turma.begin(), opcao_turma.end(), opcao_turma.begin(), ::toupper);
+                adicionarPedido(2,Estudante(cod,nome),UCTurma(opcao_uc,opcao_turma));
+                break;
+            }
+            case '3':{
+                char tecla = 's';
+                std::string opcao_turma;
+                std::string opcao_uc;
+                std::list<UCTurma> lista_turmas;
+                while(tecla != 's'){
+                    std::cout << "\nInsira a Disciplina (ex: L.EIC001): ";
+                    std::cin >> opcao_uc;
+                    std::transform(opcao_uc.begin(), opcao_uc.end(), opcao_uc.begin(), ::toupper);
+
+                    std::cout << "\nInsira a Turma (ex: 1LEIC01) (Insira 0 para ver todas) : ";
+                    std::cin >> opcao_turma;
+                    std::transform(opcao_turma.begin(), opcao_turma.end(), opcao_turma.begin(), ::toupper);
+                    lista_turmas.push_back(UCTurma(opcao_uc,opcao_turma));
+                    std::cout << "\nPressione s para listar mais: ";
+                    std::cin >> tecla;}
+                if (lista_turmas.size()!=1){
+                    adicionarPedido(4,Estudante(cod,nome),lista_turmas);
+                }
+                else
+                    adicionarPedido(3,Estudante(cod,nome),lista_turmas.front());
+                break;
+            }
+            default:
+                sair=true;
+        }
+        char tecla = 1;
+        std::cout << "\nPressione q para voltar ao menu: ";
+        while(tecla != 'q')
+            std::cin >> tecla;
+    }
+}
 void Gestor::adicionarPedido(unsigned tipo, const Estudante &est, const UCTurma &turma) {
     pedidos_.push(Pedido(est, turma, tipo));
 }
@@ -437,7 +519,6 @@ void Gestor::listarTurmas() const {
                 }
                 break;
             case '2': {
-                //passar para função?
                 std::string opcao_turma;
                 std::string opcao_uc;
                 std::cout << "\nInsira a Disciplina (ex: L.EIC001): ";
@@ -700,44 +781,7 @@ void Gestor::listarAlocacoes() const {
         }
     }
 }
-void Gestor::listarPedidos(){
-    bool sair= false;
-    while(!sair) {
-        std::system("clear");
-        std::cout << "--------------------------------------------------------\n";
-        std::cout << "|                         MENU                         |\n";
-        std::cout << "|------------------------------------------------------|\n";
-        std::cout << "| 1 - Adicionar Estudante                              |\n";
-        std::cout << "| 2 - Remover Estudante                                |\n";
-        std::cout << "|                                                      |\n";
-        std::cout << "| 0 - Sair                                             |\n";
-        std::cout << "--------------------------------------------------------\n";
-        char opcao_menu;
-        while(true) {
-            std::cout << "\nOpcao: ";
-            std::cin >> opcao_menu;
-            if(opcao_menu <= '2' && opcao_menu >= '0')
-                break;
-            std::cout << "Opcao nao valida, escolha outra opcao.\n";
-        }
-        switch(opcao_menu) {
-            case '1':{
 
-                break;
-            }
-            case '2':{
-
-                break;
-            }
-            default:
-                sair=true;
-        }
-        char tecla = 1;
-        std::cout << "\nPressione q para voltar ao menu: ";
-        while(tecla != 'q')
-            std::cin >> tecla;
-    }
-}
 
 bool checkFileExists(std::string path) {
     std::ifstream file(path);
