@@ -37,7 +37,7 @@ private:
     // Usado para filtro_num_ucs
     unsigned num_ucs_ = 0;
 
-    bool removerEstudante(const Estudante &estudante);
+    void removerEstudante(const Estudante &estudante);
     bool adicionarEstudante(Estudante &est, const UCTurma &turma);
     bool alterarTurma(Estudante &est, const UCTurma &turma);
     bool alterarTurmas(Estudante &est, const std::list<UCTurma> &turmas);
