@@ -52,6 +52,7 @@ public:
     void listarHorario() const;
     void listarAlocacoes() const;
     void definicoes();
+    void listarPedidos();
 
 };
 
