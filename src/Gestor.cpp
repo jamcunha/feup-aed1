@@ -637,13 +637,15 @@ void Gestor::listarAlocacoes() const {
                 if(opcao_turma=="0") {
                     int capacidade_turma=0;
                     for(auto it = capacidade_.begin(); it != capacidade_.end(); it++) {
-                        if(it->first.getCodUC() == opcao_uc)
+                        if(it->first.getCodUC() == opcao_uc) {
+                            std::cout << opcao_uc << " - " << it->first.getCodTurma() << ": " << it->second << " alunos\n";
                             capacidade_turma+=it->second;
+                        }
                     }
-                    std::cout<<opcao_uc<<": "<<capacidade_turma<<" alunos\n";
+                    std::cout << '\n' << opcao_uc << ": " << capacidade_turma << " alunos\n";
                 }
                 else {
-                    std::cout<<opcao_uc<<" - "<< opcao_turma<<": "<<capacidade_.at(UCTurma(opcao_uc,opcao_turma))<<" alunos\n";
+                    std::cout << opcao_uc << " - " << opcao_turma << ": " << capacidade_.at(UCTurma(opcao_uc,opcao_turma)) << " alunos\n";
                 }
                 break;
             }
