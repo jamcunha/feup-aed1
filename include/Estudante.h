@@ -45,18 +45,21 @@ public:
     std::list<UCTurma> getTurmas() const;
     //Adicionar
     /**
-     * Associa uma turma e UC ao estudante
+     * @brief Associa uma turma e UC ao estudante
+     * @details Complexidade: O(1).
      * @param turma nova turma do estudante
      */
     void addTurma(const UCTurma &turma);
     /**
      * @brief Remove um turma.
+     * @details Complexidade: O(n).
      * @param turma Turma e UC associada.
      * @return Turma removida.
      */
     UCTurma remTurma(const UCTurma &turma);
     /**
      * @brief Overloading da remTurma para dar uma opçõo de remover a turma com o código da unidade curricular que é unica.
+     * @details Complexidade: O(n).
      * @param cod_uc Código da UC.
      * @return Turma removida.
      */

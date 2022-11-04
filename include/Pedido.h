@@ -28,7 +28,8 @@ public:
       * @brief Cria um novo pedido.
       * @param estudante Estudante que efetuou o pedido.
       * @param turma Turma e UC associada ao estudante.
-      * @param tipo Tipo de pedido (1 -> remover estudante, 2 -> adicionar estudante, 3 -> alterar turma).
+      * @param tipo Tipo de pedido (1 -> remover estudante, 2 -> adicionar estudante, 3 -> alterar turma, 4-> alterar conjunto de turmas).
+      * @details Complexidade: O(1).
       */
     Pedido(const Estudante &estudante, const UCTurma &turma, unsigned tipo);
     /**
@@ -36,10 +37,11 @@ public:
      * @param estudante Estudante que efetuou o pedido.
      * @param turmas Lista de turmas que o estudante frequenta.
      * @param tipo Tipo de pedido (1 -> remover estudante, 2 -> adicionar estudante, 3 -> alterar turma).
+     * @details Complexidade: O(1).
      */
     Pedido(const Estudante &estudante, const std::list<UCTurma> &turmas, unsigned tipo);
     /**
-     * @details Não é usado o const, com o return da referência do estudante é possivel adicionar a turma antes de meter no set.
+     * @details Não é usado o const, com o return da referência do estudante é possivel adicionar a turma antes de adicionar o estudante no set.
      * @return Referência do Estudante que fez o pedido.
      */
     Estudante &getEstudante() ;

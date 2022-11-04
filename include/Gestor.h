@@ -50,12 +50,12 @@ private:
      */
     std::list<Pedido> arquivo_;
     /**
-     * @brief Remove um estudante de uma turma X. Complexidade: O(log(n)).
+     * @brief Remove um estudante de uma turma X. Complexidade: O(n).
      * @param estudante Estudante a remover.
      */
     void removerEstudante(const Estudante &estudante);
     /**
-     * @brief Adiciona um estudante a uma turma X. Complexidade: O(log(n)).
+     * @brief Adiciona um estudante a uma turma X. Complexidade: O(n).
      * @param est Estudante a ser adicionado.
      * @param turma Turma e Unidade Curricular associada.
      * @return
@@ -63,7 +63,7 @@ private:
     bool adicionarEstudante(Estudante &est, const UCTurma &turma);
     /**
      * @brief Verifica se é possível alterar a turma de um estudante.
-     * @details Complexidade: O(2n).
+     * @details Complexidade: O(n).
      * @param est Estudante que efetuou o pedido.
      * @param turma Turma a ser alterada.
      * @return True-Se for possível alterar.
@@ -72,7 +72,7 @@ private:
     bool alterarTurma(Estudante &est, const UCTurma &turma);
     /**
      * @brief Verifica se é possível alterar várias turma no qual um estudante pertence.
-     * @details Complexidade: O([2n^2]+n).
+     * @details Complexidade: O(n^2).
      * @param est Estudante que efetuou o pedido.
      * @param turmas Lista de turmas que o estudante frequenta.
      * @return True-Se for possível alterar.
@@ -88,37 +88,134 @@ public:
     Gestor();
     /**
      * @brief Abre os ficheiros para leitura.
-     * @details Complexidade: O(3n).
+     * @details Complexidade: O(n).
      */
     void lerFicheiros();
     /**
      *
-     * @param tipo Tipo de pedido. 1 -> remover estudante, 2 -> adicionar estudante, (adicionar mais).
+     * @param tipo Tipo de pedido. 1 -> remover estudante, 2 -> adicionar estudante, 3->alterar turma, 4->alterar conjunto de turmas.
      * @param est Estudante que efetuou o pedido.
      * @param turma Turma e Unidade Curricular associada ao estudante.
      *
      * @details Adicionado um valor default à turma pois não é necessária para remover estudantes
+     * @details Complexidade: O(1).
      */
     void adicionarPedido(unsigned tipo, const Estudante &est, const UCTurma &turma = UCTurma("", ""));
     /**
      * @brief Overloading da função adicionarPedido para poder adicionar um pedido que engloba mais que uma turma.
-     * @param tipo Tipo de pedido. 1 -> remover estudante, 2 -> adicionar estudante, (adicionar mais).
+     * @param tipo Tipo de pedido. 1 -> remover estudante, 2 -> adicionar estudante, 3->alterar turma, 4->alterar conjunto de turmas.
      * @param est Estudante que efetuou o pedido.
      * @param turmas Lista turmas associadas ao estudante.
+     * @details Complexidade: O(1).
      */
     void adicionarPedido(unsigned tipo, const Estudante &est, const std::list<UCTurma> &turmas);
 
     /**
     * @brief Resolve todos os pedidos.
     * @details A separação dos pedidos possiveis e impossíveis é feita aqui.
+    * @details Complexidade: O(n).
     */
     void processarPedidos();
     /**
      * @brief Abre o menú de opções.
      */
     void mostrarMenu();
-
+    /**
+     * @brief Guarda os ficheiros depois de alterados.
+     * @details Complexidade: O(n^2).
+     */
     void guardarFicheiros();
 };
 
 #endif //FEUP_AED1_GESTOR_H
+ /*
+  * Depois do merge cm o menu
+
+   bool ordenação
+/*
+@brief Determina se a ordenação é crescente ou decrescente
+@details Ordenação=true -> crescente | Ordenação=false -> decrescente.
+/*
+
+bool filtro_num_ucs_
+/**
+@brief Determina o tipo de filtragem pelo numero de ucs
+@details True -> maior que num_ucs | false -> menor que num_ucs.
+/*
+
+unsigned num_ucs
+/**
+@brief Usado como filtro.
+@details num_ucs_=5 -> Vai listar todos os estudantes com mais de 5 ucs,caso filtro_num_ucs_=true.
+@details Ou lista todos os estudantes com menos de 5 ucs, se filtro_num_ucs=false.
+/*
+
+listarestudantes()
+/**
+@brief Abre o menú que contem a listagem de estudantes.
+@details Complexidade: O(n).
+/*
+
+listarturmas()
+/**
+ @brief Abre o menú que contem a listagem de turmas.
+@details Complexidade: O(n^2).
+/*
+
+listarhorario()
+/**
+ @brief Abre o menú que contem a listagem de horários.
+@details Complexidade: O(n^3).
+/*
+
+listarAlocações()
+/**
+ @brief Abre o menú que contem a listagem de alucacoes.
+@details Complexidade: O(n^2).
+/*
+
+listarPedidos()
+/**
+  @brief Abre o menú que contem a criação de novos pedidos.
+@details Complexidade: O(n).
+/*
+
+definições()
+/**
+@brief Abre as definições.
+@details Complexidade: O(1).
+/*
+
+
+/*
+ * @brief Ordena numericamente de forma crescente, a capacidade de duas turmas diferentes.
+ */
+ /*
+ struct NumUcCrescente{
+/**
+     * @param left Capacidade da turma 1.
+     * @param right Capacidade da turma 2.
+     * @return True-Se a capacidade da turma 1 for menor que a capacidade da turma 2.
+     * @return False-Se a capacidade da turma 1 for maior que a capacidade da turma 2.
+
+     bool operator()(const Estudante &left, const Estudante &right) {
+         return (left.getTurmas().size()<=right.getTurmas().size());
+     }
+ };
+/*
+ * @brief Ordena numericamente de forma decrescente, a capacidade de duas turmas diferentes.
+*/
+/*
+struct NumUcDecrescente{
+    * @param left Capacidade da turma 1.
+    * @param right Capacidade da turma 2.
+    * @return True-Se a capacidade da turma 1 for maior que a capacidade da turma 2.
+    * @return False-Se a capacidade da turma 1 for menor que a capacidade da turma 2.
+
+    bool operator()(const Estudante &left, const Estudante &right) {
+        return left.getTurmas().size()>=right.getTurmas().size();
+    }
+};
+
+
+*/
