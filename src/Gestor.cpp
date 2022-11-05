@@ -15,26 +15,25 @@ void Gestor::lerFicheiros() {
     getline(inp_aulas, line);
     getline(inp_turmas, line);
 
-    while(getline(inp_turmas, line)) {
+    while(getline(inp_turmas, line)) {//n
         std::stringstream ss(line);
         std::string cod_uc, cod_turma;
 
-        getline(ss, cod_uc, ',');
-        getline(ss, cod_turma, '\r');
+        getline(ss, cod_uc, ',');//n
+        getline(ss, cod_turma, '\r');//n
 
         UCTurma turma = UCTurma(cod_uc, cod_turma);
         capacidade_.insert(std::pair<UCTurma, int> (turma, 0));//log(n)
-        //n log(n)
     }
 
-    while(getline(inp_estudante, line)) {
+    while(getline(inp_estudante, line)) {//n
         std::stringstream ss(line);
         std::string cod_estudante_string, nome, cod_uc, cod_turma;
 
-        getline(ss, cod_estudante_string, ',');
-        getline(ss, nome, ',');
-        getline(ss, cod_uc, ',');
-        getline(ss, cod_turma, '\r');
+        getline(ss, cod_estudante_string, ',');//
+        getline(ss, nome, ',');//n
+        getline(ss, cod_uc, ',');//n
+        getline(ss, cod_turma, '\r');//n
 
         int cod_estudante = std::stoi(cod_estudante_string);
 
@@ -51,9 +50,7 @@ void Gestor::lerFicheiros() {
 
             estudantes_.insert(est); //log(n)
         }
-        // n 2 log(n)
     }
-
     while(getline(inp_aulas, line)) {
 
         std::stringstream ss(line);
@@ -78,7 +75,7 @@ void Gestor::lerFicheiros() {
         } else {
             TurmaH horario = TurmaH(turma);
             horario.addAula(aula); // 1
-            horarios_.push_back(horario); //O(1)
+            horarios_.push_back(horario); // 1
         }
     }
 }
@@ -121,24 +118,22 @@ void Gestor::processarPedidos() {
 
 
 void Gestor::removerEstudante(const Estudante &estudante) {
-    auto it = estudantes_.find(estudante);
+    auto it = estudantes_.find(estudante);//log(n)
     estudantes_.erase(it);
 }
 
 bool Gestor::adicionarEstudante(Estudante &est, const UCTurma &turma) { //
     // Verificar se a turma possui vaga
-    if(capacidade_.at(turma)+1 > cap_)
-
+    if(capacidade_.at(turma)+1 > cap_)//log(n)
         return false;
 
     // Verificar se a alteração não provoca desiquilibrio entre turmas
     // Talvez otimizar com o find do std::map [https://cplusplus.com/reference/map/map/find/]
     for(auto it = capacidade_.begin(); it != capacidade_.end(); it++) { // n
-        if(it->first.getCodUC() == turma.getCodUC() && abs((capacidade_.at(turma)+1)-it->second) >= 4) {
+        if(it->first.getCodUC() == turma.getCodUC() && abs((capacidade_.at(turma)+1)-it->second) >= 4) {//log(n)
             return false;
         }
     }
-
     // Verificar se o horário é compatível
     auto horario = std::find(horarios_.begin(), horarios_.end(), TurmaH(turma)); // n
     for(const UCTurma &i: est.getTurmas()) { //n
@@ -164,11 +159,11 @@ bool Gestor::adicionarEstudante(Estudante &est, const UCTurma &turma) { //
 
 bool Gestor::alterarTurma(Estudante &est, const UCTurma &turma) {
     // Verificar se a turma possui vaga
-    if(capacidade_.at(turma)+1 > cap_)
+    if(capacidade_.at(turma)+1 > cap_)//log(n)
         return false;
 
     // Verificar se o estudante está na UC
-    UCTurma rem_turma = est.remTurma(turma.getCodUC());
+    UCTurma rem_turma = est.remTurma(turma.getCodUC());//n
     if(!rem_turma.isValid())
         return false;
 
@@ -176,9 +171,9 @@ bool Gestor::alterarTurma(Estudante &est, const UCTurma &turma) {
     // Verificar se a alteração não provoca desiquilibrio entre turmas
     // Talvez otimizar com o find do std::map [https://cplusplus.com/reference/map/map/find/]
     for(auto it = capacidade_.begin(); it != capacidade_.end(); it++) { // n
-        if(it->first.getCodUC() == turma.getCodUC() && abs((capacidade_.at(turma)+1)-it->second) >= 4) {
-            capacidade_.at(rem_turma)++;
-            est.addTurma(rem_turma);
+        if(it->first.getCodUC() == turma.getCodUC() && abs((capacidade_.at(turma)+1)-it->second) >= 4) {//log(n)
+            capacidade_.at(rem_turma)++;//log(n)
+            est.addTurma(rem_turma);//1
             return false;
         }
     }
@@ -187,7 +182,7 @@ bool Gestor::alterarTurma(Estudante &est, const UCTurma &turma) {
     auto horario = std::find(horarios_.begin(), horarios_.end(), TurmaH(turma)); //n
     for(const UCTurma &i: est.getTurmas()) {
         auto hor_i = std::find(horarios_.begin(), horarios_.end(), TurmaH(i));
-        if(!hor_i->isCompatible(*horario)) {
+        if(!hor_i->isCompatible(*horario)) {//n^2
             capacidade_.at(rem_turma)++;
             est.addTurma(rem_turma);
             return false;

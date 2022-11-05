@@ -64,13 +64,30 @@ struct CodEstudanteDecrescente {
         return left.getCodEstudante() > right.getCodEstudante();
     }
 };
-
+/**
+ * @brief Ordena numericamente de forma crescente, a capacidade de duas turmas diferentes.
+ */
 struct NumUcCrescente{
+    /**
+     * @param left Capacidade da turma 1.
+     * @param right Capacidade da turma 2.
+     * @return True-Se a capacidade da turma 1 for menor que a capacidade da turma 2.
+     * @return False-Se a capacidade da turma 1 for maior que a capacidade da turma 2.
+     */
     bool operator()(const Estudante &left, const Estudante &right) {
         return (left.getTurmas().size()<=right.getTurmas().size());
     }
 };
+/**
+ * @brief Ordena numericamente de forma decrescente, a capacidade de duas turmas diferentes.
+ */
 struct NumUcDecrescente{
+    /**
+     * @param left Capacidade da turma 1.
+     * @param right Capacidade da turma 2.
+     * @return True-Se a capacidade da turma 1 for maior que a capacidade da turma 2.
+     * @return False-Se a capacidade da turma 1 for menor que a capacidade da turma 2.
+     */
     bool operator()(const Estudante &left, const Estudante &right) {
         return left.getTurmas().size()>=right.getTurmas().size();
     }

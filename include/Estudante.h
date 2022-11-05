@@ -73,7 +73,7 @@ public:
      */
     bool operator==(const Estudante &est) const;
     /**
-     *Compara a desigualdade entre o nome ou o código de estudante
+     * Compara a desigualdade entre o nome ou o código de estudante
      * @param est estudante2 a comparar
      * @return True  se o nome ou o código de estudante forem diferentes
      * @return False se o nome e o código de estudante forem iguais

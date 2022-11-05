@@ -26,7 +26,7 @@
 class Gestor {
 private:
     /**
-     *@brief Guarda uma lista de estudantes por ordem crescente.
+     * @brief Guarda uma lista de estudantes por ordem crescente.
      *
      * @details A ordenação é feita com o uso da class OrdenarEstudantes.
      */
@@ -36,34 +36,48 @@ private:
      */
     std::vector<TurmaH> horarios_;
     /**
-     *@brief Fila de pedidos.
+     * @brief Fila de pedidos.
      *
      * @details É usado o "FIFO(first in first out)".
      */
     std::queue<Pedido> pedidos_;
     /**
-     *@brief Número de estudantes inscritos por turma.
+     * @brief Número de estudantes inscritos por turma.
      */
     std::map<UCTurma, int> capacidade_;
     /**
-     *@brief Pedidos arquivados.
+     * @brief Pedidos arquivados.
      */
     std::list<Pedido> arquivo_;
-    // Ordenação true -> crescente, false -> decrescente
+    /**
+     * @brief Determina se a ordenação é crescente ou decrescente
+     * @details Ordenação=true -> crescente | Ordenação=false -> decrescente.
+     */
     bool ordenacao_ = true;
-    // Filtragem pelo numero de ucs true -> maior que num_ucs, false -> menor que num_ucs
+    /**
+     * @brief Determina o tipo de filtragem pelo numero de ucs.
+     * @details True -> maior que num_ucs | false -> menor que num_ucs.
+     */
     bool filtro_num_ucs_ = true;
-    // Usado para filtro_num_ucs
+    /**
+     * @brief Usado como filtro.
+     * @details num_ucs_=5 -> Vai listar todos os estudantes com mais de 5 ucs,caso filtro_num_ucs_=true.
+     * @details Ou lista todos os estudantes com menos de 5 ucs, se filtro_num_ucs=false.
+     */
     unsigned num_ucs_ = 0;
-    // Capacidade máxima da turma
+    /**
+     * @brief Limite de estudantes inscritos numa turma.
+     */
     unsigned cap_ = 25;
-/**
-     * @brief Remove um estudante de uma turma X. Complexidade: O(n).
+    /**
+     * @brief Remove um estudante de uma turma X.
+     * @details Complexidade: O(log(n)).
      * @param estudante Estudante a remover.
      */
     void removerEstudante(const Estudante &estudante);
     /**
-     * @brief Adiciona um estudante a uma turma X. Complexidade: O(n).
+     * @brief Adiciona um estudante a uma turma X.
+     * @deetails Complexidade: O(n).
      * @param est Estudante a ser adicionado.
      * @param turma Turma e Unidade Curricular associada.
      * @return
@@ -100,7 +114,7 @@ public:
      */
     void lerFicheiros();
     /**
-     *
+     * @bief Adiciona um pedido á fila de pedidos.
      * @param tipo Tipo de pedido. 1 -> remover estudante, 2 -> adicionar estudante, 3->alterar turma, 4->alterar conjunto de turmas.
      * @param est Estudante que efetuou o pedido.
      * @param turma Turma e Unidade Curricular associada ao estudante.
@@ -117,12 +131,30 @@ public:
      * @details Complexidade: O(1).
      */
     void adicionarPedido(unsigned tipo, const Estudante &est, const std::list<UCTurma> &turmas);
-    void mostrarMenu();
+    /**
+     * @brief Abre o menú que contem a listagem de estudantes.
+     * @details
+     */
     void listarEstudantes() const;
+    /**
+     * @brief Abre o menú que contem a listagem de turmas.
+     */
     void listarTurmas() const;
+    /**
+     * @brief Abre o menú que contem a listagem de horários.
+     */
     void listarHorario();
+    /**
+     * @brief Abre o menú que contem a listagem de alucacoes.
+     */
     void listarAlocacoes() const;
+    /**
+     * @brief Abre o menú que contem a criação de novos pedidos.
+     */
     void listarPedidos();
+    /**
+     * @brief Abre as definições.
+     */
     void definicoes();
     /**
     * @brief Resolve todos os pedidos.
@@ -142,94 +174,3 @@ public:
 };
 
 #endif //FEUP_AED1_GESTOR_H
- /*
-  * Depois do merge cm o menu
-
-   bool ordenação
-/*
-@brief Determina se a ordenação é crescente ou decrescente
-@details Ordenação=true -> crescente | Ordenação=false -> decrescente.
-/*
-
-bool filtro_num_ucs_
-/**
-@brief Determina o tipo de filtragem pelo numero de ucs
-@details True -> maior que num_ucs | false -> menor que num_ucs.
-/*
-
-unsigned num_ucs
-/**
-@brief Usado como filtro.
-@details num_ucs_=5 -> Vai listar todos os estudantes com mais de 5 ucs,caso filtro_num_ucs_=true.
-@details Ou lista todos os estudantes com menos de 5 ucs, se filtro_num_ucs=false.
-/*
-
-listarestudantes()
-/**
-@brief Abre o menú que contem a listagem de estudantes.
-@details Complexidade: O(n).
-/*
-
-listarturmas()
-/**
- @brief Abre o menú que contem a listagem de turmas.
-@details Complexidade: O(n^2).
-/*
-
-listarhorario()
-/**
- @brief Abre o menú que contem a listagem de horários.
-@details Complexidade: O(n^3).
-/*
-
-listarAlocações()
-/**
- @brief Abre o menú que contem a listagem de alucacoes.
-@details Complexidade: O(n^2).
-/*
-
-listarPedidos()
-/**
-  @brief Abre o menú que contem a criação de novos pedidos.
-@details Complexidade: O(n).
-/*
-
-definições()
-/**
-@brief Abre as definições.
-@details Complexidade: O(1).
-/*
-
-
-/*
- * @brief Ordena numericamente de forma crescente, a capacidade de duas turmas diferentes.
- */
- /*
- struct NumUcCrescente{
-/**
-     * @param left Capacidade da turma 1.
-     * @param right Capacidade da turma 2.
-     * @return True-Se a capacidade da turma 1 for menor que a capacidade da turma 2.
-     * @return False-Se a capacidade da turma 1 for maior que a capacidade da turma 2.
-
-     bool operator()(const Estudante &left, const Estudante &right) {
-         return (left.getTurmas().size()<=right.getTurmas().size());
-     }
- };
-/*
- * @brief Ordena numericamente de forma decrescente, a capacidade de duas turmas diferentes.
-*/
-/*
-struct NumUcDecrescente{
-    * @param left Capacidade da turma 1.
-    * @param right Capacidade da turma 2.
-    * @return True-Se a capacidade da turma 1 for maior que a capacidade da turma 2.
-    * @return False-Se a capacidade da turma 1 for menor que a capacidade da turma 2.
-
-    bool operator()(const Estudante &left, const Estudante &right) {
-        return left.getTurmas().size()>=right.getTurmas().size();
-    }
-};
-
-
-*/

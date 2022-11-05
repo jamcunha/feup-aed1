@@ -51,6 +51,13 @@ public:
      * @return Tipo de aula
      */
     std::string getTipo() const;
+    //OPERADORES
+    /**
+     * Compara a igualdade entre duas aulas.
+     * @param est Aula a ser comparada.
+     * @return True-Caso as duas aulas sejam iguais( No mesmo dia, começam e terminam á mesma hora, com o mesmo tipo de aula).
+     * @return False-Caso o dia,hora de inicio,hora do fim ou tipo de aula sejam diferentes.
+     */
     bool operator==(const Aula &est) const;
 };
 
