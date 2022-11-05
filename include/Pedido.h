@@ -16,7 +16,7 @@ public:
     Pedido(const Estudante &estudante, const std::list<UCTurma> &turmas, unsigned tipo);
 
     // O get é suposto ser const mas assim dá return à referencia do estudante para poder adicionar a turma antes de meter no set
-    Estudante &getEstudante() ;
+    Estudante &getEstudante();
     UCTurma getTurma() const;
     std::list<UCTurma> getTurmas() const;
     unsigned getTipo() const;

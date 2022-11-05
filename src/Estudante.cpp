@@ -41,7 +41,7 @@ UCTurma Estudante::remTurma(const std::string &cod_uc) {
 }
 
 bool Estudante::operator==(const Estudante &est) const {
-    return (nome_ == est.getNome() && cod_estudante_ == est.getCodEstudante());
+    return cod_estudante_ == est.getCodEstudante();
 }
 
 bool Estudante::operator!=(const Estudante &est) const {

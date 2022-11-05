@@ -6,25 +6,34 @@
 #include <string>
 #include <sstream>
 #include <fstream>
+#include <iostream>
 #include <algorithm>
 #include <queue>
 #include <map>
+#include <iomanip>
 
 #include "Estudante.h"
 #include "TurmaH.h"
 #include "OrdenarEstudantes.h"
 #include "Pedido.h"
-
-// Capacidade máxima da turma
-#define CAP 25
+#include "Aula.h"
 
 class Gestor {
 private:
-    std::set<Estudante, NomeCrescente> estudantes_;
+    std::set<Estudante, CodEstudanteCrescente> estudantes_;
     std::vector<TurmaH> horarios_;
     std::queue<Pedido> pedidos_;
     std::map<UCTurma, int> capacidade_;
     std::list<Pedido> arquivo_;
+
+    // Ordenação true -> crescente, false -> decrescente
+    bool ordenacao_ = true;
+    // Filtragem pelo numero de ucs true -> maior que num_ucs, false -> menor que num_ucs
+    bool filtro_num_ucs_ = true;
+    // Usado para filtro_num_ucs
+    unsigned num_ucs_ = 0;
+    // Capacidade máxima da turma
+    unsigned cap_ = 25;
 
     void removerEstudante(const Estudante &estudante);
     bool adicionarEstudante(Estudante &est, const UCTurma &turma);
@@ -33,13 +42,19 @@ private:
 
 public:
     Gestor();
-
     void lerFicheiros();
     // Adicionado um valor default à turma pois não é necessária para remover estudantes
     void adicionarPedido(unsigned tipo, const Estudante &est, const UCTurma &turma = UCTurma("", ""));
     void adicionarPedido(unsigned tipo, const Estudante &est, const std::list<UCTurma> &turmas);
     void processarPedidos();
+
     void mostrarMenu();
+    void listarEstudantes() const;
+    void listarTurmas() const;
+    void listarHorario();
+    void listarAlocacoes() const;
+    void listarPedidos();
+    void definicoes();
 
     void guardarFicheiros();
 };
