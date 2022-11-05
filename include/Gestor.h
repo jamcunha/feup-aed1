@@ -6,18 +6,18 @@
 #include <string>
 #include <sstream>
 #include <fstream>
+#include <iostream>
 #include <algorithm>
 #include <queue>
 #include <map>
+#include <iomanip>
 
 #include "Estudante.h"
 #include "TurmaH.h"
 #include "OrdenarEstudantes.h"
+#include "Aula.h"
 
 #include "Pedido.h"
-
-// Capacidade máxima da turma
-#define CAP 25
 /**
  * @brief Cria um Gestor.
  *
@@ -49,7 +49,15 @@ private:
      *@brief Pedidos arquivados.
      */
     std::list<Pedido> arquivo_;
-    /**
+    // Ordenação true -> crescente, false -> decrescente
+    bool ordenacao_ = true;
+    // Filtragem pelo numero de ucs true -> maior que num_ucs, false -> menor que num_ucs
+    bool filtro_num_ucs_ = true;
+    // Usado para filtro_num_ucs
+    unsigned num_ucs_ = 0;
+    // Capacidade máxima da turma
+    unsigned cap_ = 25;
+/**
      * @brief Remove um estudante de uma turma X. Complexidade: O(n).
      * @param estudante Estudante a remover.
      */
@@ -109,7 +117,13 @@ public:
      * @details Complexidade: O(1).
      */
     void adicionarPedido(unsigned tipo, const Estudante &est, const std::list<UCTurma> &turmas);
-
+    void mostrarMenu();
+    void listarEstudantes() const;
+    void listarTurmas() const;
+    void listarHorario();
+    void listarAlocacoes() const;
+    void listarPedidos();
+    void definicoes();
     /**
     * @brief Resolve todos os pedidos.
     * @details A separação dos pedidos possiveis e impossíveis é feita aqui.

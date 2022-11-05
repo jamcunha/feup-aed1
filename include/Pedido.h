@@ -40,6 +40,7 @@ public:
      * @details Complexidade: O(1).
      */
     Pedido(const Estudante &estudante, const std::list<UCTurma> &turmas, unsigned tipo);
+
     /**
      * @details Não é usado o const, com o return da referência do estudante é possivel adicionar a turma antes de adicionar o estudante no set.
      * @return Referência do Estudante que fez o pedido.

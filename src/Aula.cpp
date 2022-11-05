@@ -19,3 +19,7 @@ float Aula::getFim() const {
 std::string Aula::getTipo() const {
     return tipo_;
 }
+
+bool Aula::operator==(const Aula &est) const {
+    return  dia_==est.getDia() && inicio_==est.getInicio() && fim_==est.getFim() && tipo_==est.getTipo();
+}
