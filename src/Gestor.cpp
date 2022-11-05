@@ -485,75 +485,141 @@ void listagemHorario(std::list<std::pair<Aula,std::string>> &dia_semana){
 }
 
 void Gestor::listarHorario(){
-    int numero_estudante;
-    while(true) {
+    bool sair = false;
+    while(!sair) {
+        std::system("clear");
+        std::cout << "--------------------------------------------------------\n";
+        std::cout << "|                        TURMAS                        |\n";
+        std::cout << "|------------------------------------------------------|\n";
+        std::cout << "| 1 - Ver Horario Aluno                                |\n";
+        std::cout << "| 2 - Ver Horario Disciplina                           |\n";
+        std::cout << "|                                                      |\n";
+        std::cout << "| 0 - Voltar ao menu principal                         |\n";
+        std::cout << "--------------------------------------------------------\n";
+        char opcao_menu = 1;
         while(true) {
-            std::cout << "Insira o Codigo do Estudante (exemplo: 202025232): ";
-            std::cin >> numero_estudante;
-            if(int(std::log10(numero_estudante)+1) == 9)
+            std::cout << "\nOpcao: ";
+            std::cin >> opcao_menu;
+            if(opcao_menu <= '2' && opcao_menu >= '0')
                 break;
-            std::cout << "Formato do Codigo de Estudante errado. \n\n";
+            std::cout << "Opcao nao valida, escolha outra opcao.\n";
         }
-        std::list<std::pair<Aula,std::string>> segunda,terca,quarta,quinta,sexta;
-        auto it = estudantes_.find(Estudante(numero_estudante,""));
-        if (it != estudantes_.end()){
-            std::cout<<"\nHorario "<<it->getNome()<<"\n";
-            for (const UCTurma &i : it->getTurmas()){
-                auto hor_i = std::find(horarios_.begin(), horarios_.end(), TurmaH(i));
-                std::list<Aula> horario = hor_i->getHorario();
-                for (const Aula &j : horario){
-                    switch(j.getDia()[0]) {
-                        case 'M':
-                            segunda.push_back(std::make_pair(j,i.getCodUC()));
-                            break;
-                        case 'T':
-                            if (j.getDia() == "Tuesday"){
-                                terca.push_back(std::make_pair(j,i.getCodUC()));
-                                break;
-                            }
-                            quinta.push_back(std::make_pair(j,i.getCodUC()));
-                            break;
-                        case 'W':
-                            quarta.push_back(std::make_pair(j,i.getCodUC()));
-                            break;
-                        case 'F':
-                            sexta.push_back(std::make_pair(j,i.getCodUC()));
-                            break;
-                    }
-
+        std::list<std::pair<Aula, std::string>> segunda, terca, quarta, quinta, sexta;
+        switch(opcao_menu) {
+            case '1':{
+                int numero_estudante;
+                while(true) {
+                    std::cout << "Insira o Codigo do Estudante (exemplo: 202025232): ";
+                    std::cin >> numero_estudante;
+                    if(int(std::log10(numero_estudante)+1) == 9)
+                        break;
+                    std::cout << "Formato do Codigo de Estudante errado. \n\n";
                 }
-            }
-            if(!segunda.empty()) {
-                std::cout << '\n';
-                listagemHorario(segunda);
-            }
-            if(!terca.empty()) {
-                std::cout << '\n';
-                listagemHorario(terca);
-            }
-            if(!quarta.empty()) {
-                std::cout << '\n';
-                listagemHorario(quarta);
-            }
-            if(!quinta.empty()) {
-                std::cout << '\n';
-                listagemHorario(quinta);
-            }
-            if(!sexta.empty()) {
-                std::cout << '\n';
-                listagemHorario(sexta);
-            }
-            break;
-        }
-        else
-            std::cout << "Estudante não encontrado.\n";
-        break;
-    }
+                auto it = estudantes_.find(Estudante(numero_estudante,""));
+                if (it != estudantes_.end()){
+                    std::cout<<"\nHorario "<<it->getNome()<<"\n";
+                    for (const UCTurma &i : it->getTurmas()){
+                        auto hor_i = std::find(horarios_.begin(), horarios_.end(), TurmaH(i));
+                        std::list<Aula> horario = hor_i->getHorario();
+                        for (const Aula &j : horario){
+                            switch(j.getDia()[0]) {
+                                case 'M':
+                                    segunda.push_back(std::make_pair(j,i.getCodUC()));
+                                    break;
+                                case 'T':
+                                    if (j.getDia() == "Tuesday"){
+                                        terca.push_back(std::make_pair(j,i.getCodUC()));
+                                        break;
+                                    }
+                                    quinta.push_back(std::make_pair(j,i.getCodUC()));
+                                    break;
+                                case 'W':
+                                    quarta.push_back(std::make_pair(j,i.getCodUC()));
+                                    break;
+                                case 'F':
+                                    sexta.push_back(std::make_pair(j,i.getCodUC()));
+                                    break;
+                            }
 
-    char tecla = 1;
-    std::cout << "\nPressione q para voltar ao menu: ";
-    while(tecla != 'q')
-        std::cin >> tecla;
+                        }
+                    }
+                }
+                else
+                    std::cout << "Estudante não encontrado.\n";
+                break;
+            }
+            case '2': {
+                std::string opcao_uc;
+                std::cout << "\nInsira a Disciplina (ex: L.EIC001): ";
+                std::cin >> opcao_uc;
+                std::transform(opcao_uc.begin(), opcao_uc.end(), opcao_uc.begin(), ::toupper);
+                for (const TurmaH &i: horarios_) {
+                    if (i.getTurma().getCodUC() == opcao_uc) {
+                        for (const Aula &j: i.getHorario()) {
+                            switch (j.getDia()[0]) {
+                                case 'M':{
+                                    auto it = std::find(segunda.begin(),segunda.end(),std::make_pair(j, opcao_uc));
+                                    if (it==segunda.end())
+                                        segunda.push_back(std::make_pair(j, opcao_uc));
+                                    break;}
+                                case 'T':{
+                                    if (j.getDia() == "Tuesday") {
+                                        auto it = std::find(terca.begin(),terca.end(),std::make_pair(j, opcao_uc));
+                                        if (it==terca.end())
+                                            terca.push_back(std::make_pair(j, opcao_uc));
+                                        break;
+                                    }
+                                    auto it = std::find(quinta.begin(),quinta.end(),std::make_pair(j, opcao_uc));
+                                    if (it==quinta.end())
+                                        quinta.push_back(std::make_pair(j, opcao_uc));
+                                    break;}
+                                case 'W':{
+                                    auto it = std::find(quarta.begin(),quarta.end(),std::make_pair(j, opcao_uc));
+                                    if (it==quarta.end())
+                                        quarta.push_back(std::make_pair(j, opcao_uc));
+                                    break;}
+                                case 'F':
+                                    auto it = std::find(sexta.begin(),sexta.end(),std::make_pair(j, opcao_uc));
+                                    if (it==sexta.end())
+                                        sexta.push_back(std::make_pair(j, opcao_uc));
+                                    break;
+                            }
+
+                        }
+                    }
+                }
+                break;
+            }
+            default:
+                sair = true;
+        }
+        if(!segunda.empty()) {
+            std::cout << '\n';
+            listagemHorario(segunda);
+        }
+        if(!terca.empty()) {
+            std::cout << '\n';
+            listagemHorario(terca);
+        }
+        if(!quarta.empty()) {
+            std::cout << '\n';
+            listagemHorario(quarta);
+        }
+        if(!quinta.empty()) {
+            std::cout << '\n';
+            listagemHorario(quinta);
+        }
+        if(!sexta.empty()) {
+            std::cout << '\n';
+            listagemHorario(sexta);
+        }
+        char tecla = 1;
+        if(opcao_menu != '0') {
+            std::cout << "\nPressione q para voltar ao menu: ";
+            while(tecla != 'q')
+                std::cin >> tecla;
+        }
+    }
 }
 
 void Gestor::listarAlocacoes() const {

@@ -17,6 +17,7 @@ public:
     float getInicio() const;
     float getFim() const;
     std::string getTipo() const;
+    bool operator==(const Aula &est) const;
 };
 
 #endif //FEUP_AED1_AULA_H
