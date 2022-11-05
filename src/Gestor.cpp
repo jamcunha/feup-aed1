@@ -124,7 +124,7 @@ void Gestor::removerEstudante(const Estudante &estudante) {
 
 bool Gestor::adicionarEstudante(Estudante &est, const UCTurma &turma) {
     // Verificar se a turma possui vaga
-    if(capacidade_.at(turma)+1 > CAP)
+    if(capacidade_.at(turma)+1 > cap_)
         return false;
 
     // Verificar se a alteração não provoca desiquilibrio entre turmas
@@ -160,17 +160,11 @@ bool Gestor::adicionarEstudante(Estudante &est, const UCTurma &turma) {
 
 bool Gestor::alterarTurma(Estudante &est, const UCTurma &turma) {
     // Verificar se a turma possui vaga
-    if(capacidade_.at(turma)+1 > CAP)
-        return false;
-
-    // Verificar se o estudante existe
-    auto it = estudantes_.find(est);
-    if(it == estudantes_.end())
+    if(capacidade_.at(turma)+1 > cap_)
         return false;
 
     // Verificar se o estudante está na UC
-    auto &temp = const_cast<Estudante &>(*it);
-    UCTurma rem_turma = temp.remTurma(turma.getCodUC());
+    UCTurma rem_turma = est.remTurma(turma.getCodUC());
     if(!rem_turma.isValid())
         return false;
 
@@ -180,7 +174,7 @@ bool Gestor::alterarTurma(Estudante &est, const UCTurma &turma) {
     for(auto it = capacidade_.begin(); it != capacidade_.end(); it++) {
         if(it->first.getCodUC() == turma.getCodUC() && abs((capacidade_.at(turma)+1)-it->second) >= 4) {
             capacidade_.at(rem_turma)++;
-            temp.addTurma(rem_turma);
+            est.addTurma(rem_turma);
             return false;
         }
     }
@@ -191,33 +185,26 @@ bool Gestor::alterarTurma(Estudante &est, const UCTurma &turma) {
         auto hor_i = std::find(horarios_.begin(), horarios_.end(), TurmaH(i));
         if(!hor_i->isCompatible(*horario)) {
             capacidade_.at(rem_turma)++;
-            temp.addTurma(rem_turma);
+            est.addTurma(rem_turma);
             return false;
         }
     }
 
     capacidade_.at(turma)++;
-    temp.addTurma(turma);
+    est.addTurma(turma);
 
     return true;
 }
 
 bool Gestor::alterarTurmas(Estudante &est, const std::list<UCTurma> &turmas) {
-    // Verificar se o estudante existe
-    auto it = estudantes_.find(est);
-    if(it == estudantes_.end())
-            return false;
-
-    auto &temp = const_cast<Estudante &>(*it);
-
     // Verificação para cada turma
     for(auto it_turma = turmas.begin(); it_turma != turmas.end(); it_turma++) {
         // Verificar se a turma possui vaga
-        if(capacidade_.at(*it_turma)+1 > CAP)
+        if(capacidade_.at(*it_turma)+1 > cap_)
             return false;
 
         // Verificar se o estudante está na UC
-        UCTurma rem_turma = temp.remTurma(it_turma->getCodUC());
+        UCTurma rem_turma = est.remTurma(it_turma->getCodUC());
         if(!rem_turma.isValid())
             return false;
 
@@ -227,7 +214,7 @@ bool Gestor::alterarTurmas(Estudante &est, const std::list<UCTurma> &turmas) {
         for(auto it = capacidade_.begin(); it != capacidade_.end(); it++) {
             if(it->first.getCodUC() == it_turma->getCodUC() && abs((capacidade_.at(*it_turma)+1)-it->second) >= 4) {
                 capacidade_.at(rem_turma)++;
-                temp.addTurma(rem_turma);
+                est.addTurma(rem_turma);
                 return false;
             }
         }
@@ -238,18 +225,18 @@ bool Gestor::alterarTurmas(Estudante &est, const std::list<UCTurma> &turmas) {
             auto hor_i = std::find(horarios_.begin(), horarios_.end(), TurmaH(i));
             if(!hor_i->isCompatible(*horario)) {
                 capacidade_.at(rem_turma)++;
-                temp.addTurma(rem_turma);
+                est.addTurma(rem_turma);
                 return false;
             }
         }
     }
 
     for(auto it_turma = turmas.begin(); it_turma != turmas.end(); it_turma++) {
-        UCTurma rem_turma = temp.remTurma(it_turma->getCodUC());
+        UCTurma rem_turma = est.remTurma(it_turma->getCodUC());
         capacidade_.at(rem_turma)--;
 
         capacidade_.at(*it_turma)++;
-        temp.addTurma(*it_turma);
+        est.addTurma(*it_turma);
     }
 
     return true;
@@ -779,9 +766,9 @@ void Gestor::listarPedidos() {
                     std::cin >> tecla;
                 }
                 if (lista_turmas.size()!=1)
-                    adicionarPedido(4,*it,lista_turmas);
+                    adicionarPedido(4,const_cast<Estudante &>(*it),lista_turmas);
                 else
-                    adicionarPedido(3,*it,lista_turmas.front());
+                    adicionarPedido(3,const_cast<Estudante &>(*it),lista_turmas.front());
                 break;
             }
             default:
@@ -806,6 +793,7 @@ void Gestor::definicoes() {
         std::cout << "| 1 - Ordenacao Crescente/Decrescente [" << (ordenacao_ ? "Crescente]  ": "Decrescente]") << "    |\n";
         std::cout << "| 2 - Filtrar pelo numero de UCs [" << (filtro_num_ucs_ ? "Maior]" : "Menor]") << "               |\n";
         std::cout << "| 3 - Numero de UCs para filtrar [" << std::setfill('0') << std::setw(2) << num_ucs_ << "]                  |\n" ;
+        std::cout << "| 4 - Capacidade maxima das turmas [" << std::setfill('0') << std::setw(2) << cap_ << "]                |\n" ;
         std::cout << "|                                                      |\n";
         std::cout << "| 0 - Voltar ao menu principal                         |\n";
         std::cout << "--------------------------------------------------------\n";
@@ -814,7 +802,7 @@ void Gestor::definicoes() {
         while(true) {
             std::cout << "\nOpcao: ";
             std::cin >> opcao_menu;
-            if(opcao_menu <= '3' && opcao_menu >= '0')
+            if(opcao_menu <= '4' && opcao_menu >= '0')
                 break;
             std::cout << "Opcao nao valida, escolha outra opcao.\n";
         }
@@ -834,6 +822,16 @@ void Gestor::definicoes() {
                         break;
                     num_ucs_ = 0;
                     std::cout << "Numero de UCs nao valido, insira um numero entre 0 e 99\n";
+                }
+                break;
+            case '4':
+                while(true) {
+                    std::cout << "\nCapacidade maxima das turmas: ";
+                    std::cin >> cap_;
+                    if(cap_ < 100 && cap_ >= 0)
+                        break;
+                    num_ucs_ = 25;
+                    std::cout << "Capacidade nao valida, insira um numero entre 0 e 99\n";
                 }
                 break;
             default:

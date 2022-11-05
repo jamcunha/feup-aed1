@@ -18,10 +18,6 @@
 #include "Pedido.h"
 #include "Aula.h"
 
-// Capacidade máxima da turma
-#define CAP 25
-
-
 class Gestor {
 private:
     std::set<Estudante, CodEstudanteCrescente> estudantes_;
@@ -36,6 +32,8 @@ private:
     bool filtro_num_ucs_ = true;
     // Usado para filtro_num_ucs
     unsigned num_ucs_ = 0;
+    // Capacidade máxima da turma
+    unsigned cap_ = 25;
 
     void removerEstudante(const Estudante &estudante);
     bool adicionarEstudante(Estudante &est, const UCTurma &turma);
