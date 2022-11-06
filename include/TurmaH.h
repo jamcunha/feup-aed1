@@ -52,13 +52,13 @@ public:
      * @return False-Se o horário tiver aulas sobrepostas.
      */
     bool isCompatible(const TurmaH &horario) const;
+    //Operadores
     /**
      * Compara se a turma1 é igual á turma2.
      * @param turma turma a ser comparada.
      * @return True se forem da mesma turma.
      * @return False se forem de turmas diferentes.
      */
-     //Operadores
     bool operator==(const TurmaH &turma) const;
     /**
      * Compara se a turma1 é diferente da turma2.

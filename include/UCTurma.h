@@ -41,8 +41,8 @@ public:
     std::string getCodTurma() const;
     /**
      * Verifica se o código da unidade curricular e da turma existem.
-     * @return True- Se ambos forem validos (não vazios).
-     * @return False- Se um dos dois estiver vazio.
+     * @return True - Se ambos forem validos (não vazios).
+     * @return False - Se um dos dois estiver vazio.
      */
     bool isValid() const;
     //Operadores
@@ -62,8 +62,8 @@ public:
      * Compara o código de ambas as turmas.
      * @details Criada para poder usar o std::pair
      * @param turma
-     * @return True- Se o código da turma1 for menor que o da turma2.
-     * @return False- Se o código da turma1 for maior ou igual que o da turma2.
+     * @return True - Se o código da turma1 for menor que o da turma2.
+     * @return False - Se o código da turma1 for maior ou igual que o da turma2.
      */
     bool operator<(const UCTurma &turma) const;
 };

@@ -115,7 +115,7 @@ public:
     void lerFicheiros();
     /**
      * @bief Adiciona um pedido á fila de pedidos.
-     * @param tipo Tipo de pedido. 1 -> remover estudante, 2 -> adicionar estudante, 3->alterar turma, 4->alterar conjunto de turmas.
+     * @param tipo Tipo de pedido. 1 -> remover estudante, 2 -> adicionar estudante, 3 -> alterar turma, 4 -> alterar conjunto de turmas.
      * @param est Estudante que efetuou o pedido.
      * @param turma Turma e Unidade Curricular associada ao estudante.
      *
@@ -125,7 +125,7 @@ public:
     void adicionarPedido(unsigned tipo, const Estudante &est, const UCTurma &turma = UCTurma("", ""));
     /**
      * @brief Overloading da função adicionarPedido para poder adicionar um pedido que engloba mais que uma turma.
-     * @param tipo Tipo de pedido. 1 -> remover estudante, 2 -> adicionar estudante, 3->alterar turma, 4->alterar conjunto de turmas.
+     * @param tipo Tipo de pedido. 1 -> remover estudante, 2 -> adicionar estudante, 3 -> alterar turma, 4 -> alterar conjunto de turmas.
      * @param est Estudante que efetuou o pedido.
      * @param turmas Lista turmas associadas ao estudante.
      * @details Complexidade: O(1).
