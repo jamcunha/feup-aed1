@@ -6,7 +6,7 @@
 
 #include <list>
 /**
- * @Brief Representa o Horário de cada turma.
+ * @brief Representa o Horário de cada turma.
  */
 class TurmaH {
 private:
