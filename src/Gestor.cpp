@@ -15,7 +15,7 @@ void Gestor::lerFicheiros() {
     getline(inp_aulas, line);
     getline(inp_turmas, line);
 
-    while(getline(inp_turmas, line)) {
+    while(getline(inp_turmas, line)) {//n
         std::stringstream ss(line);
         std::string cod_uc, cod_turma;
 
@@ -23,10 +23,10 @@ void Gestor::lerFicheiros() {
         getline(ss, cod_turma, '\r');
 
         UCTurma turma = UCTurma(cod_uc, cod_turma);
-        capacidade_.insert(std::pair<UCTurma, int> (turma, 0));
+        capacidade_.insert(std::pair<UCTurma, int> (turma, 0));//log(n)
     }
 
-    while(getline(inp_estudante, line)) {
+    while(getline(inp_estudante, line)) {//n
         std::stringstream ss(line);
         std::string cod_estudante_string, nome, cod_uc, cod_turma;
 
@@ -38,21 +38,21 @@ void Gestor::lerFicheiros() {
         int cod_estudante = std::stoi(cod_estudante_string);
 
         Estudante est = Estudante(cod_estudante, nome);
-        auto it = estudantes_.find(est);
+        auto it = estudantes_.find(est);//log(n)
         if(it != estudantes_.end()) {
             auto &temp = const_cast<Estudante &>(*it);
 
-            capacidade_.at(UCTurma(cod_uc, cod_turma))++;
-            temp.addTurma(UCTurma(cod_uc, cod_turma));
+            capacidade_.at(UCTurma(cod_uc, cod_turma))++; // log(n)
+            temp.addTurma(UCTurma(cod_uc, cod_turma)); // 1
         } else {
-            capacidade_.at(UCTurma(cod_uc, cod_turma))++;
-            est.addTurma(UCTurma(cod_uc, cod_turma));
+            capacidade_.at(UCTurma(cod_uc, cod_turma))++; //log(n)
+            est.addTurma(UCTurma(cod_uc, cod_turma)); // 1
 
-            estudantes_.insert(est);
+            estudantes_.insert(est); //log(n)
         }
     }
+    while(getline(inp_aulas, line)) {//n
 
-    while(getline(inp_aulas, line)) {
         std::stringstream ss(line);
         std::string cod_turma, cod_uc, dia, inicio_string, duracao_string, tipo;
 
@@ -69,48 +69,48 @@ void Gestor::lerFicheiros() {
         UCTurma turma = UCTurma(cod_uc, cod_turma);
         Aula aula = Aula(dia, inicio, duracao, tipo);
 
-        auto it = std::find(horarios_.begin(), horarios_.end(), TurmaH(turma));
+        auto it = std::find(horarios_.begin(), horarios_.end(), TurmaH(turma)); //log(n)
         if(it != horarios_.end()) {
-            it->addAula(aula);
+            it->addAula(aula); // 1
         } else {
             TurmaH horario = TurmaH(turma);
-            horario.addAula(aula);
-            horarios_.push_back(horario);
+            horario.addAula(aula); // 1
+            horarios_.push_back(horario); // 1
         }
     }
 }
 
 void Gestor::adicionarPedido(unsigned tipo, const Estudante &est, const UCTurma &turma) {
-    pedidos_.push(Pedido(est, turma, tipo));
+    pedidos_.push(Pedido(est, turma, tipo)); // 1
 }
 
 void Gestor::adicionarPedido(unsigned tipo, const Estudante &est, const std::list<UCTurma> &turmas) {
-    pedidos_.push(Pedido(est, turmas, tipo));
+    pedidos_.push(Pedido(est, turmas, tipo)); // 1
 }
 
-void Gestor::processarPedidos() {
-    while(!pedidos_.empty()) {
+void Gestor::processarPedidos() {//n^2
+    while(!pedidos_.empty()) {//n
         Pedido pedido = pedidos_.front();
         pedidos_.pop();
         bool flag;
         switch(pedido.getTipo()) {
             case 1:
-                removerEstudante(pedido.getEstudante());
+                removerEstudante(pedido.getEstudante()); //log(n)
                 break;
             case 2:
-                flag = adicionarEstudante(pedido.getEstudante(), pedido.getTurma());
+                flag = adicionarEstudante(pedido.getEstudante(), pedido.getTurma()); // n
                 if(!flag)
-                    arquivo_.push_back(pedido);
+                    arquivo_.push_back(pedido); // 1
                 break;
             case 3:
-                flag = alterarTurma(pedido.getEstudante(), pedido.getTurma());
+                flag = alterarTurma(pedido.getEstudante(), pedido.getTurma()); // n
                 if(!flag)
-                    arquivo_.push_back(pedido);
+                    arquivo_.push_back(pedido); // 1
                 break;
             case 4:
-                flag = alterarTurmas(pedido.getEstudante(), pedido.getTurmas());
+                flag = alterarTurmas(pedido.getEstudante(), pedido.getTurmas()); // n^2
                 if(!flag)
-                    arquivo_.push_back(pedido);
+                    arquivo_.push_back(pedido); // 1
                 break;
         }
     }
@@ -118,87 +118,84 @@ void Gestor::processarPedidos() {
 
 
 void Gestor::removerEstudante(const Estudante &estudante) {
-    auto it = estudantes_.find(estudante);
+    auto it = estudantes_.find(estudante);//log(n)
     estudantes_.erase(it);
 }
 
-bool Gestor::adicionarEstudante(Estudante &est, const UCTurma &turma) {
+bool Gestor::adicionarEstudante(Estudante &est, const UCTurma &turma) { //n
     // Verificar se a turma possui vaga
-    if(capacidade_.at(turma)+1 > cap_)
+    if(capacidade_.at(turma)+1 > cap_)//log(n)
         return false;
 
     // Verificar se a alteração não provoca desiquilibrio entre turmas
     // Talvez otimizar com o find do std::map [https://cplusplus.com/reference/map/map/find/]
-    for(auto it = capacidade_.begin(); it != capacidade_.end(); it++) {
-        if(it->first.getCodUC() == turma.getCodUC() && abs((capacidade_.at(turma)+1)-it->second) >= 4) {
+    for(auto it = capacidade_.begin(); it != capacidade_.end(); it++) { // n
+        if(it->first.getCodUC() == turma.getCodUC() && abs((capacidade_.at(turma)+1)-it->second) >= 4) {//log(n)
             return false;
         }
     }
-
     // Verificar se o horário é compatível
-    auto horario = std::find(horarios_.begin(), horarios_.end(), TurmaH(turma));
-    for(const UCTurma &i: est.getTurmas()) {
-        auto hor_i = std::find(horarios_.begin(), horarios_.end(), TurmaH(i));
+    auto horario = std::find(horarios_.begin(), horarios_.end(), TurmaH(turma)); // n
+    for(const UCTurma &i: est.getTurmas()) { //n
+        auto hor_i = std::find(horarios_.begin(), horarios_.end(), TurmaH(i)); //n
         if(!hor_i->isCompatible(*horario))
             return false;
     }
 
-    auto it = estudantes_.find(est);
+    auto it = estudantes_.find(est); //log(n)
     if(it != estudantes_.end()) {
         auto &temp = const_cast<Estudante &>(*it);
 
-        capacidade_.at(turma)++;
-        temp.addTurma(turma);
+        capacidade_.at(turma)++;// log(n)
+        temp.addTurma(turma); // 1
     } else {
-        capacidade_.at(turma)++;
-        est.addTurma(turma);
+        capacidade_.at(turma)++;// log(n)
+        est.addTurma(turma); // 1
 
-        estudantes_.insert(est);
+        estudantes_.insert(est);// log(n)
     }
     return true;
 }
 
 bool Gestor::alterarTurma(Estudante &est, const UCTurma &turma) {
     // Verificar se a turma possui vaga
-    if(capacidade_.at(turma)+1 > cap_)
+    if(capacidade_.at(turma)+1 > cap_)//log(n)
         return false;
 
     // Verificar se o estudante está na UC
-    UCTurma rem_turma = est.remTurma(turma.getCodUC());
+    UCTurma rem_turma = est.remTurma(turma.getCodUC());//n
     if(!rem_turma.isValid())
         return false;
 
-    capacidade_.at(rem_turma)--;
+    capacidade_.at(rem_turma)--; // log(n)
     // Verificar se a alteração não provoca desiquilibrio entre turmas
     // Talvez otimizar com o find do std::map [https://cplusplus.com/reference/map/map/find/]
-    for(auto it = capacidade_.begin(); it != capacidade_.end(); it++) {
-        if(it->first.getCodUC() == turma.getCodUC() && abs((capacidade_.at(turma)+1)-it->second) >= 4) {
-            capacidade_.at(rem_turma)++;
-            est.addTurma(rem_turma);
+    for(auto it = capacidade_.begin(); it != capacidade_.end(); it++) { // n
+        if(it->first.getCodUC() == turma.getCodUC() && abs((capacidade_.at(turma)+1)-it->second) >= 4) {//log(n)
+            capacidade_.at(rem_turma)++;//log(n)
+            est.addTurma(rem_turma);//1
             return false;
         }
     }
 
     // Verificar se o horário é compatível
-    auto horario = std::find(horarios_.begin(), horarios_.end(), TurmaH(turma));
+    auto horario = std::find(horarios_.begin(), horarios_.end(), TurmaH(turma)); //n
     for(const UCTurma &i: est.getTurmas()) {
         auto hor_i = std::find(horarios_.begin(), horarios_.end(), TurmaH(i));
-        if(!hor_i->isCompatible(*horario)) {
+        if(!hor_i->isCompatible(*horario)) {//n^2
             capacidade_.at(rem_turma)++;
             est.addTurma(rem_turma);
             return false;
         }
     }
-
     capacidade_.at(turma)++;
     est.addTurma(turma);
-
     return true;
 }
 
 bool Gestor::alterarTurmas(Estudante &est, const std::list<UCTurma> &turmas) {
     // Verificação para cada turma
-    for(auto it_turma = turmas.begin(); it_turma != turmas.end(); it_turma++) {
+    for(auto it_turma = turmas.begin(); it_turma != turmas.end(); it_turma++) { // n
         // Verificar se a turma possui vaga
         if(capacidade_.at(*it_turma)+1 > cap_)
             return false;
@@ -211,7 +208,7 @@ bool Gestor::alterarTurmas(Estudante &est, const std::list<UCTurma> &turmas) {
         capacidade_.at(rem_turma)--;
         // Verificar se a alteração não provoca desiquilibrio entre turmas
         // Talvez otimizar com o find do std::map [https://cplusplus.com/reference/map/map/find/]
-        for(auto it = capacidade_.begin(); it != capacidade_.end(); it++) {
+        for(auto it = capacidade_.begin(); it != capacidade_.end(); it++) { //n
             if(it->first.getCodUC() == it_turma->getCodUC() && abs((capacidade_.at(*it_turma)+1)-it->second) >= 4) {
                 capacidade_.at(rem_turma)++;
                 est.addTurma(rem_turma);
@@ -319,14 +316,14 @@ void Gestor::listarEstudantes() const {
                     std::set<Estudante, NomeDecrescente> estudantes(estudantes_.begin(), estudantes_.end());
                     std::cout << "Numero Estudante | Nome                       | Numero de UCs\n";
                     std::cout << "-------------------------------------------------------------\n";
-                    for (const auto &i: estudantes)
-                        if((filtro_num_ucs_ && i.getTurmas().size() > num_ucs_) || (!filtro_num_ucs_ && i.getTurmas().size() < num_ucs_))
-                            std::cout << i.getCodEstudante() << "\t | " << i.getNome() << std::setfill(' ') << std::setw(29-i.getNome().size()) << "| " << i.getTurmas().size() << "\n";
+                    for (const auto &i: estudantes)//n
+                        if((filtro_num_ucs_ && i.getTurmas().size() > num_ucs_) || (!filtro_num_ucs_ && i.getTurmas().size() < num_ucs_))//1
+                            std::cout << i.getCodEstudante() << "\t | " << i.getNome() << std::setfill(' ') << std::setw(29-i.getNome().size()) << "| " << i.getTurmas().size() << "\n"; //1
                 } else {
                     std::set<Estudante, NomeCrescente> estudantes(estudantes_.begin(), estudantes_.end());
                     std::cout << "Numero Estudante | Nome                       | Numero de UCs\n";
                     std::cout << "-------------------------------------------------------------\n";
-                    for (const auto &i: estudantes)
+                    for (const auto &i: estudantes)//n
                         if((filtro_num_ucs_ && i.getTurmas().size() > num_ucs_) || (!filtro_num_ucs_ && i.getTurmas().size() < num_ucs_))
                             std::cout << i.getCodEstudante() << "\t | " << i.getNome() << std::setfill(' ') << std::setw(29-i.getNome().size()) << "| " << i.getTurmas().size() << "\n";
                 }
@@ -411,10 +408,10 @@ void Gestor::listarTurmas() const {
 
                 std::system("clear");
                 std::cout << "Estudantes do " << opcao_ano << "º Ano\n\n";
-                for (auto it = estudantes_.begin(); it!= estudantes_.end(); it++) {
-                    if((filtro_num_ucs_ && it->getTurmas().size() > num_ucs_) || (!filtro_num_ucs_ && it->getTurmas().size() < num_ucs_)) {
-                        for(auto &j: it->getTurmas()) {
-                            int code = (int)(j.getCodTurma()[0]) - '0';
+                for (auto it = estudantes_.begin(); it!= estudantes_.end(); it++) {//n
+                    if((filtro_num_ucs_ && it->getTurmas().size() > num_ucs_) || (!filtro_num_ucs_ && it->getTurmas().size() < num_ucs_)) {//1
+                        for(auto &j: it->getTurmas()) { //n
+                            int code = (int)(j.getCodTurma()[0]) - '0';//1
                             if(code == opcao_ano) {
                                 std::cout << it->getCodEstudante() << "\t" << it->getNome() << "\n";
                                 break;
@@ -436,9 +433,9 @@ void Gestor::listarTurmas() const {
 
                 std::cout << '\n';
                 if(opcao_turma=="0"){
-                    for(auto it = estudantes_.begin(); it != estudantes_.end(); it++) {
-                        if((filtro_num_ucs_ && it->getTurmas().size() > num_ucs_) || (!filtro_num_ucs_ && it->getTurmas().size() < num_ucs_)) {
-                            for(auto &j: it->getTurmas()) {
+                    for(auto it = estudantes_.begin(); it != estudantes_.end(); it++) {//n
+                        if((filtro_num_ucs_ && it->getTurmas().size() > num_ucs_) || (!filtro_num_ucs_ && it->getTurmas().size() < num_ucs_)) {//1
+                            for(auto &j: it->getTurmas()) {//n
                                 if (j.getCodUC() == opcao_uc)
                                     std::cout << it->getCodEstudante() << "\t" << it->getNome() <<"\n";
                             }
@@ -477,7 +474,7 @@ struct horarioOrdenado {
 };
 
 void listagemHorario(std::list<std::pair<Aula,std::string>> &dia_semana){
-    dia_semana.sort(horarioOrdenado());
+    dia_semana.sort(horarioOrdenado()); // n log(n)
     std::cout << dia_semana.begin()->first.getDia() << ":\n\n";
     for (const std::pair<Aula,std::string> &i : dia_semana){
         std::cout << i.second << " - " << "Horas: " << i.first.getInicio() << " - " << i.first.getFim() << '\t' << i.first.getTipo() << "\n";
@@ -553,35 +550,35 @@ void Gestor::listarHorario(){
                 std::cout << "\nInsira a Disciplina (ex: L.EIC001): ";
                 std::cin >> opcao_uc;
                 std::transform(opcao_uc.begin(), opcao_uc.end(), opcao_uc.begin(), ::toupper);
-                for (const TurmaH &i: horarios_) {
+                for (const TurmaH &i: horarios_) {//n
                     if (i.getTurma().getCodUC() == opcao_uc) {
-                        for (const Aula &j: i.getHorario()) {
+                        for (const Aula &j: i.getHorario()) {//n
                             switch (j.getDia()[0]) {
                                 case 'M':{
-                                    auto it = std::find(segunda.begin(),segunda.end(),std::make_pair(j, opcao_uc));
+                                    auto it = std::find(segunda.begin(),segunda.end(),std::make_pair(j, opcao_uc));// log(n)
                                     if (it==segunda.end())
-                                        segunda.push_back(std::make_pair(j, opcao_uc));
+                                        segunda.push_back(std::make_pair(j, opcao_uc));//1
                                     break;}
                                 case 'T':{
                                     if (j.getDia() == "Tuesday") {
-                                        auto it = std::find(terca.begin(),terca.end(),std::make_pair(j, opcao_uc));
+                                        auto it = std::find(terca.begin(),terca.end(),std::make_pair(j, opcao_uc));// log(n)
                                         if (it==terca.end())
-                                            terca.push_back(std::make_pair(j, opcao_uc));
+                                            terca.push_back(std::make_pair(j, opcao_uc));//1
                                         break;
                                     }
-                                    auto it = std::find(quinta.begin(),quinta.end(),std::make_pair(j, opcao_uc));
+                                    auto it = std::find(quinta.begin(),quinta.end(),std::make_pair(j, opcao_uc));// log(n)
                                     if (it==quinta.end())
-                                        quinta.push_back(std::make_pair(j, opcao_uc));
+                                        quinta.push_back(std::make_pair(j, opcao_uc));//1
                                     break;}
                                 case 'W':{
-                                    auto it = std::find(quarta.begin(),quarta.end(),std::make_pair(j, opcao_uc));
+                                    auto it = std::find(quarta.begin(),quarta.end(),std::make_pair(j, opcao_uc));// log(n)
                                     if (it==quarta.end())
-                                        quarta.push_back(std::make_pair(j, opcao_uc));
+                                        quarta.push_back(std::make_pair(j, opcao_uc));//1
                                     break;}
                                 case 'F':
-                                    auto it = std::find(sexta.begin(),sexta.end(),std::make_pair(j, opcao_uc));
+                                    auto it = std::find(sexta.begin(),sexta.end(),std::make_pair(j, opcao_uc));// log(n)
                                     if (it==sexta.end())
-                                        sexta.push_back(std::make_pair(j, opcao_uc));
+                                        sexta.push_back(std::make_pair(j, opcao_uc));//1
                                     break;
                             }
 
@@ -595,11 +592,11 @@ void Gestor::listarHorario(){
         }
         if(!segunda.empty()) {
             std::cout << '\n';
-            listagemHorario(segunda);
+            listagemHorario(segunda);//n log(n)
         }
         if(!terca.empty()) {
             std::cout << '\n';
-            listagemHorario(terca);
+            listagemHorario(terca);//n log(n)
         }
         if(!quarta.empty()) {
             std::cout << '\n';
@@ -646,9 +643,9 @@ void Gestor::listarAlocacoes() const {
             case '1':{
                 int count1 = 0, count2 = 0, count3 = 0;
                 bool flag1,flag2,flag3;
-                for (const auto &estudante : estudantes_) {
+                for (const auto &estudante : estudantes_) {//n
                     flag1 = flag2 = flag3 = false;
-                    for (const auto & j : estudante.getTurmas()) {
+                    for (const auto & j : estudante.getTurmas()) {//n
                         int code = (int)(j.getCodTurma()[0]) - '0';
                         switch (code) {
                             case 1:
@@ -689,7 +686,7 @@ void Gestor::listarAlocacoes() const {
                 std::cout << '\n';
                 if(opcao_turma=="0") {
                     int capacidade_turma=0;
-                    for(auto it = capacidade_.begin(); it != capacidade_.end(); it++) {
+                    for(auto it = capacidade_.begin(); it != capacidade_.end(); it++) {//n
                         if(it->first.getCodUC() == opcao_uc) {
                             std::cout << opcao_uc << " - " << it->first.getCodTurma() << ": " << it->second << " alunos\n";
                             capacidade_turma+=it->second;
@@ -698,7 +695,7 @@ void Gestor::listarAlocacoes() const {
                     std::cout << '\n' << opcao_uc << ": " << capacidade_turma << " alunos\n";
                 }
                 else {
-                    std::cout << opcao_uc << " - " << opcao_turma << ": " << capacidade_.at(UCTurma(opcao_uc,opcao_turma)) << " alunos\n";
+                    std::cout << opcao_uc << " - " << opcao_turma << ": " << capacidade_.at(UCTurma(opcao_uc,opcao_turma)) << " alunos\n";// log(n)
                 }
                 break;
             }
@@ -747,7 +744,7 @@ void Gestor::listarPedidos() {
         }
         switch(opcao_menu) {
             case '1': {
-                auto it = estudantes_.find(Estudante(cod, ""));
+                auto it = estudantes_.find(Estudante(cod, ""));//log(n)
                 if(it == estudantes_.end()) {
                     std::cout << "Estudante não encontrado\n";
                     break;
@@ -770,7 +767,7 @@ void Gestor::listarPedidos() {
                 std::cin >> nome;
 
                 bool flag = false;
-                auto it = estudantes_.find(Estudante(cod, ""));
+                auto it = estudantes_.find(Estudante(cod, ""));//log(n)
                 char confirm = 's';
                 if(it != estudantes_.end()) {
                     std::cout << "Encontrado estudante com codigo igual\n";
@@ -786,16 +783,16 @@ void Gestor::listarPedidos() {
 
                 std::cout << "\nInsira a Disciplina (ex: L.EIC001): ";
                 std::cin >> opcao_uc;
-                std::transform(opcao_uc.begin(), opcao_uc.end(), opcao_uc.begin(), ::toupper);
+                std::transform(opcao_uc.begin(), opcao_uc.end(), opcao_uc.begin(), ::toupper);//n
 
                 std::cout << "\nInsira a Turma (ex: 1LEIC01) (Insira 0 para ver todas) : ";
                 std::cin >> opcao_turma;
-                std::transform(opcao_turma.begin(), opcao_turma.end(), opcao_turma.begin(), ::toupper);
+                std::transform(opcao_turma.begin(), opcao_turma.end(), opcao_turma.begin(), ::toupper);//n
 
                 if(flag)
-                    adicionarPedido(2,*it,UCTurma(opcao_uc,opcao_turma));
+                    adicionarPedido(2,*it,UCTurma(opcao_uc,opcao_turma));//1
                 else
-                    adicionarPedido(2,Estudante(cod,nome),UCTurma(opcao_uc,opcao_turma));
+                    adicionarPedido(2,Estudante(cod,nome),UCTurma(opcao_uc,opcao_turma));//1
                 break;
             }
             case '3': {
@@ -804,7 +801,7 @@ void Gestor::listarPedidos() {
                 std::string opcao_uc;
                 std::list<UCTurma> lista_turmas;
 
-                auto it = estudantes_.find(Estudante(cod, ""));
+                auto it = estudantes_.find(Estudante(cod, ""));//log(n)
                 char confirm = 's';
                 if(it != estudantes_.end()) {
                     std::cout << "Encontrado estudante com codigo igual\n";
@@ -822,12 +819,12 @@ void Gestor::listarPedidos() {
                 while(tecla == 's') {
                     std::cout << "\nInsira a Disciplina (ex: L.EIC001): ";
                     std::cin >> opcao_uc;
-                    std::transform(opcao_uc.begin(), opcao_uc.end(), opcao_uc.begin(), ::toupper);
+                    std::transform(opcao_uc.begin(), opcao_uc.end(), opcao_uc.begin(), ::toupper);//n
 
                     std::cout << "\nInsira a Turma (ex: 1LEIC01) (Insira 0 para ver todas) : ";
                     std::cin >> opcao_turma;
-                    std::transform(opcao_turma.begin(), opcao_turma.end(), opcao_turma.begin(), ::toupper);
-                    lista_turmas.push_back(UCTurma(opcao_uc,opcao_turma));
+                    std::transform(opcao_turma.begin(), opcao_turma.end(), opcao_turma.begin(), ::toupper);//n
+                    lista_turmas.push_back(UCTurma(opcao_uc,opcao_turma));//1
                     std::cout << "\nPressione s para listar mais [s/n]: ";
                     std::cin >> tecla;
                 }
@@ -917,8 +914,8 @@ void Gestor::guardarFicheiros() {
     std::ofstream out_arquivo("../data/arquivo.csv", std::ios::app);
     if(!existe)
         out_arquivo << "Tipo,CodEstudante,Nome,CodUc,CodTurma\n";
-    for(Pedido &pedido: arquivo_) {
-        for(UCTurma &turma: pedido.getTurmas()) {
+    for(Pedido &pedido: arquivo_) {//n
+        for(UCTurma &turma: pedido.getTurmas()) {//n
             out_arquivo << pedido.getTipo() << ',';
             out_arquivo << pedido.getEstudante().getCodEstudante() << ',' << pedido.getEstudante().getNome() << ',';
             out_arquivo << turma.getCodUC() << ',' << turma.getCodTurma() << '\n';
@@ -929,8 +926,8 @@ void Gestor::guardarFicheiros() {
     std::ofstream out_estudantes("../data/students_classes.csv");
     out_estudantes << "StudentCode,StudentName,UcCode,ClassCode\n";
 
-    for(auto it = estudantes_.begin(); it != estudantes_.end(); it++) {
-        for(auto &turma: it->getTurmas()) {
+    for(auto it = estudantes_.begin(); it != estudantes_.end(); it++) {//n
+        for(auto &turma: it->getTurmas()) {//n
             out_estudantes << it->getCodEstudante() << ',' << it->getNome() << ',';
             out_estudantes << turma.getCodUC() << ',' << turma.getCodTurma() << '\n';
         }

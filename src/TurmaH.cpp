@@ -11,14 +11,14 @@ std::list<Aula> TurmaH::getHorario() const {
 }
 
 void TurmaH::addAula(const Aula &aula) {
-    horario_.push_back(aula);
+    horario_.push_back(aula);//O(1)
 }
 
-bool TurmaH::isCompatible(const TurmaH &horario) const {
-    for(const Aula &aula : horario.getHorario()) {
+bool TurmaH::isCompatible(const TurmaH &horario) const { // n^2
+    for(const Aula &aula : horario.getHorario()) { //n
         if(aula.getTipo() == "T")
             continue;
-        for(const Aula &it : horario_) {
+        for(const Aula &it : horario_) { //n
             if(it.getTipo() == "T")
                 continue;
             if(aula.getDia() == it.getDia() && (
@@ -27,7 +27,6 @@ bool TurmaH::isCompatible(const TurmaH &horario) const {
                 return false;
         }
     }
-
     return true;
 }
 
