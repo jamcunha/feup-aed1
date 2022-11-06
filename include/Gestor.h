@@ -26,11 +26,11 @@
 class Gestor {
 private:
     /**
-     * @brief Guarda uma lista de estudantes por ordem crescente.
+     * @brief Guarda uma lista de estudantes.
      *
-     * @details A ordenação é feita com o uso da class OrdenarEstudantes.
+     * @details A ordenação é feita com o uso de algoritmos de ordenação no ficheiro OrdenarEstudantes.h.
      */
-    std::set<Estudante, NomeCrescente> estudantes_;
+    std::set<Estudante, CodEstudanteCrescente> estudantes_;
     /**
      *@brief Lista de horários.
      */

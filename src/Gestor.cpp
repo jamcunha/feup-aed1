@@ -19,8 +19,8 @@ void Gestor::lerFicheiros() {
         std::stringstream ss(line);
         std::string cod_uc, cod_turma;
 
-        getline(ss, cod_uc, ',');//n
-        getline(ss, cod_turma, '\r');//n
+        getline(ss, cod_uc, ',');
+        getline(ss, cod_turma, '\r');
 
         UCTurma turma = UCTurma(cod_uc, cod_turma);
         capacidade_.insert(std::pair<UCTurma, int> (turma, 0));//log(n)
