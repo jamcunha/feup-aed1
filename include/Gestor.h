@@ -110,7 +110,7 @@ public:
     Gestor();
     /**
      * @brief Abre os ficheiros para leitura.
-     * @details Complexidade: O(n).
+     * @details Complexidade: O(n(log(n)).
      */
     void lerFicheiros();
     /**
@@ -133,23 +133,27 @@ public:
     void adicionarPedido(unsigned tipo, const Estudante &est, const std::list<UCTurma> &turmas);
     /**
      * @brief Abre o menú que contem a listagem de estudantes.
-     * @details
+     * @details Complexidade: O(n).
      */
     void listarEstudantes() const;
     /**
      * @brief Abre o menú que contem a listagem de turmas.
+     * @details Complexidade: O(n^2).
      */
     void listarTurmas() const;
     /**
      * @brief Abre o menú que contem a listagem de horários.
+     * @details Complexidade: O(n^3).
      */
     void listarHorario();
     /**
      * @brief Abre o menú que contem a listagem de alucacoes.
+     * @details Complexidade: O(n^2).
      */
     void listarAlocacoes() const;
     /**
      * @brief Abre o menú que contem a criação de novos pedidos.
+     * @details Complexidade: O(n).
      */
     void listarPedidos();
     /**
@@ -159,7 +163,7 @@ public:
     /**
     * @brief Resolve todos os pedidos.
     * @details A separação dos pedidos possiveis e impossíveis é feita aqui.
-    * @details Complexidade: O(n).
+    * @details Complexidade: O(n^2).
     */
     void processarPedidos();
     /**
