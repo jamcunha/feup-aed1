@@ -283,7 +283,7 @@ void Gestor::mostrarMenu() {
                 break;
             default:
                 std::system("clear");
-                exit(0);
+                return;
         }
     }
 }
