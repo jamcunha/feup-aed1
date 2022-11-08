@@ -32,7 +32,7 @@ private:
      */
     std::set<Estudante, CodEstudanteCrescente> estudantes_;
     /**
-     *@brief Lista de horários.
+     * @brief Lista de horários.
      */
     std::vector<TurmaH> horarios_;
     /**

@@ -8,18 +8,18 @@
 class UCTurma {
 private:
     /**
-     *@brief Código da Unidade Curricular.
+     * @brief Código da Unidade Curricular.
      */
     std::string cod_uc_;
     /**
-     *@brief Código da Turma.
+     * @brief Código da Turma.
      */
     std::string cod_turma_;
 
 public:
     //Construtores
     /**
-     *Cria uma associação entre a turma e a unidade curricular.
+     * Cria uma associação entre a turma e a unidade curricular.
      * @param cod_uc Unidade Curricular.
      * @param cod_turma Turma.
      */
