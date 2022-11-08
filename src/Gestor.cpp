@@ -486,7 +486,7 @@ void Gestor::listarHorario(){
     while(!sair) {
         std::system("clear");
         std::cout << "--------------------------------------------------------\n";
-        std::cout << "|                        TURMAS                        |\n";
+        std::cout << "|                        HORARIO                       |\n";
         std::cout << "|------------------------------------------------------|\n";
         std::cout << "| 1 - Ver Horario Aluno                                |\n";
         std::cout << "| 2 - Ver Horario Disciplina                           |\n";
